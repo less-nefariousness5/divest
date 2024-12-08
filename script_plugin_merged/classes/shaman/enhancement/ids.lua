@@ -1,0 +1,590 @@
+---@class EnhancementTalent
+---@field ancestral_guidance Spell
+---@field ancestral_wolf_affinity Spell
+---@field arctic_snowstorm Spell
+---@field ascending_air Spell
+---@field astral_bulwark Spell
+---@field astral_shift Spell
+---@field brimming_with_life Spell
+---@field call_of_the_elements Spell
+---@field capacitor_totem Spell
+---@field chain_heal Spell
+---@field chain_lightning Spell
+---@field cleanse_spirit Spell
+---@field creation_core Spell
+---@field earth_elemental Spell
+---@field earth_shield Spell
+---@field earthgrab_totem Spell
+---@field elemental_orbit Spell
+---@field elemental_resistance Spell
+---@field elemental_warding Spell
+---@field encasing_cold Spell
+---@field enhanced_imbues Spell
+---@field fire_and_ice Spell
+---@field frost_shock Spell
+---@field graceful_spirit Spell
+---@field greater_purge Spell
+---@field guardians_cudgel Spell
+---@field gust_of_wind Spell
+---@field healing_stream_totem Spell
+---@field hex Spell
+---@field jet_stream Spell
+---@field lava_burst Spell
+---@field lightning_lasso Spell
+---@field mana_spring Spell
+---@field natures_fury Spell
+---@field natures_guardian Spell
+---@field natures_swiftness Spell
+---@field planes_traveler Spell
+---@field poison_cleansing_totem Spell
+---@field primordial_bond Spell
+---@field purge Spell
+---@field refreshing_waters Spell
+---@field seasoned_winds Spell
+---@field spirit_walk Spell
+---@field spirit_wolf Spell
+---@field spiritwalkers_aegis Spell
+---@field spiritwalkers_grace Spell
+---@field static_charge Spell
+---@field stone_bulwark_totem Spell
+---@field thunderous_paws Spell
+---@field thundershock Spell
+---@field thunderstorm Spell
+---@field totemic_focus Spell
+---@field totemic_projection Spell
+---@field totemic_recall Spell
+---@field totemic_surge Spell
+---@field traveling_storms Spell
+---@field tremor_totem Spell
+---@field voodoo_mastery Spell
+---@field wind_rush_totem Spell
+---@field wind_shear Spell
+---@field winds_of_alakir Spell
+---@field alpha_wolf Spell
+---@field ascendance Spell
+---@field ashen_catalyst Spell
+---@field converging_storms Spell
+---@field crash_lightning Spell
+---@field crashing_storms Spell
+---@field deeply_rooted_elements Spell
+---@field doom_winds Spell
+---@field elemental_assault Spell
+---@field elemental_blast Spell
+---@field elemental_spirits Spell
+---@field elemental_weapons Spell
+---@field feral_spirit Spell
+---@field fire_nova Spell
+---@field flowing_spirits Spell
+---@field flurry Spell
+---@field forceful_winds Spell
+---@field hailstorm Spell
+---@field hot_hand Spell
+---@field ice_strike Spell
+---@field ice_strike_passive Spell
+---@field improved_maelstrom_weapon Spell
+---@field lashing_flames Spell
+---@field lava_lash Spell
+---@field legacy_of_the_frost_witch Spell
+---@field molten_assault Spell
+---@field molten_thunder Spell
+---@field overflowing_maelstrom Spell
+---@field primal_maelstrom Spell
+---@field primordial_wave Spell
+---@field raging_maelstrom Spell
+---@field splintered_elements Spell
+---@field static_accumulation Spell
+---@field stormblast Spell
+---@field stormflurry Spell
+---@field storms_wrath Spell
+---@field stormstrike Spell
+---@field sundering Spell
+---@field swirling_maelstrom Spell
+---@field tempest_strikes Spell
+---@field thorims_invocation Spell
+---@field unrelenting_storms Spell
+---@field unruly_winds Spell
+---@field voltaic_blaze Spell
+---@field windfury_weapon Spell
+---@field witch_doctors_ancestry Spell
+---@field amplification_core Spell
+---@field earthsurge Spell
+---@field imbuement_mastery Spell
+---@field lively_totems Spell
+---@field oversized_totems Spell
+---@field oversurge Spell
+---@field pulse_capacitor Spell
+---@field reactivity Spell
+---@field supportive_imbuements Spell
+---@field surging_totem Spell
+---@field swift_recall Spell
+---@field totemic_coordination Spell
+---@field totemic_rebound Spell
+---@field whirling_elements Spell
+---@field wind_barrier Spell
+---@field arc_discharge Spell
+---@field awakening_storms Spell
+---@field conductive_energy Spell
+---@field electroshock Spell
+---@field lightning_conduit Spell
+---@field natures_protection Spell
+---@field rolling_thunder Spell
+---@field storm_swell Spell
+---@field stormcaller Spell
+---@field supercharge Spell
+---@field surging_currents Spell
+---@field tempest Spell
+---@field unlimited_power Spell
+---@field voltaic_surge Spell
+
+local raw_talents = {
+    -- Shaman
+    ancestral_guidance        = Spell(108281),
+    ancestral_wolf_affinity   = Spell(382197),
+    arctic_snowstorm          = Spell(462764),
+    ascending_air             = Spell(462791),
+    astral_bulwark            = Spell(377933),
+    astral_shift              = Spell(108271),
+    brimming_with_life        = Spell(381689),
+    call_of_the_elements      = Spell(383011),
+    capacitor_totem           = Spell(192058),
+    chain_heal                = Spell(1064),
+    chain_lightning           = Spell(188443),
+    cleanse_spirit            = Spell(51886),
+    creation_core             = Spell(383012),
+    earth_elemental           = Spell(198103),
+    earth_shield              = Spell(974),
+    earthgrab_totem           = Spell(51485),
+    elemental_orbit           = Spell(383010),
+    elemental_resistance      = Spell(462368),
+    elemental_warding         = Spell(381650),
+    encasing_cold             = Spell(462762),
+    enhanced_imbues           = Spell(462796),
+    fire_and_ice              = Spell(382886),
+    frost_shock               = Spell(196840),
+    graceful_spirit           = Spell(192088),
+    greater_purge             = Spell(378773),
+    guardians_cudgel          = Spell(381819),
+    gust_of_wind              = Spell(192063),
+    healing_stream_totem      = Spell(5394),
+    hex                       = Spell(51514),
+    jet_stream                = Spell(462817),
+    lava_burst                = Spell(51505),
+    lightning_lasso           = Spell(305483),
+    mana_spring               = Spell(381930),
+    natures_fury              = Spell(381655),
+    natures_guardian          = Spell(30884),
+    natures_swiftness         = Spell(378081),
+    planes_traveler           = Spell(381647),
+    poison_cleansing_totem    = Spell(383013),
+    primordial_bond           = Spell(381764),
+    purge                     = Spell(370),
+    refreshing_waters         = Spell(378211),
+    seasoned_winds            = Spell(355630),
+    spirit_walk               = Spell(58875),
+    spirit_wolf               = Spell(260878),
+    spiritwalkers_aegis       = Spell(378077),
+    spiritwalkers_grace       = Spell(79206),
+    static_charge             = Spell(265046),
+    stone_bulwark_totem       = Spell(108270),
+    thunderous_paws           = Spell(378075),
+    thundershock              = Spell(378779),
+    thunderstorm              = Spell(51490),
+    totemic_focus             = Spell(382201),
+    totemic_projection        = Spell(108287),
+    totemic_recall            = Spell(108285),
+    totemic_surge             = Spell(381867),
+    traveling_storms          = Spell(204403),
+    tremor_totem              = Spell(8143),
+    voodoo_mastery            = Spell(204268),
+    wind_rush_totem           = Spell(192077),
+    wind_shear                = Spell(57994),
+    winds_of_alakir           = Spell(382215),
+    alpha_wolf                = Spell(198434),
+    ascendance                = Spell(114051),
+    ashen_catalyst            = Spell(390370),
+    converging_storms         = Spell(384363),
+    crash_lightning           = Spell(187874),
+    crashing_storms           = Spell(334308),
+    deeply_rooted_elements    = Spell(378270),
+    doom_winds                = Spell(384352),
+    elemental_assault         = Spell(210853),
+    elemental_blast           = Spell(117014),
+    elemental_spirits         = Spell(262624),
+    elemental_weapons         = Spell(384355),
+    feral_spirit              = Spell(51533),
+    fire_nova                 = Spell(333974),
+    flowing_spirits           = Spell(469314),
+    flurry                    = Spell(382888),
+    forceful_winds            = Spell(262647),
+    hailstorm                 = Spell(334195),
+    hot_hand                  = Spell(201900),
+    ice_strike                = Spell(470194),
+    ice_strike_passive        = Spell(466467),
+    improved_maelstrom_weapon = Spell(383303),
+    lashing_flames            = Spell(334046),
+    lava_lash                 = Spell(60103),
+    legacy_of_the_frost_witch = Spell(384450),
+    molten_assault            = Spell(334033),
+    molten_thunder            = Spell(469344),
+    overflowing_maelstrom     = Spell(384149),
+    primal_maelstrom          = Spell(384405),
+    primordial_wave           = Spell(375982),
+    raging_maelstrom          = Spell(384143),
+    splintered_elements       = Spell(382042),
+    static_accumulation       = Spell(384411),
+    stormblast                = Spell(319930),
+    stormflurry               = Spell(344357),
+    storms_wrath              = Spell(392352),
+    stormstrike               = Spell(17364),
+    sundering                 = Spell(197214),
+    swirling_maelstrom        = Spell(384359),
+    tempest_strikes           = Spell(428071),
+    thorims_invocation        = Spell(384444),
+    unrelenting_storms        = Spell(470490),
+    unruly_winds              = Spell(390288),
+    voltaic_blaze             = Spell(470053),
+    windfury_weapon           = Spell(33757),
+    witch_doctors_ancestry    = Spell(384447),
+    amplification_core        = Spell(445029),
+    earthsurge                = Spell(455590),
+    imbuement_mastery         = Spell(445028),
+    lively_totems             = Spell(445034),
+    oversized_totems          = Spell(445026),
+    oversurge                 = Spell(445030),
+    pulse_capacitor           = Spell(445032),
+    reactivity                = Spell(445035),
+    supportive_imbuements     = Spell(445033),
+    surging_totem             = Spell(444995),
+    swift_recall              = Spell(445027),
+    totemic_coordination      = Spell(445036),
+    totemic_rebound           = Spell(445025),
+    whirling_elements         = Spell(445024),
+    wind_barrier              = Spell(445031),
+    arc_discharge             = Spell(455096),
+    awakening_storms          = Spell(455129),
+    conductive_energy         = Spell(455123),
+    electroshock              = Spell(454022),
+    lightning_conduit         = Spell(467778),
+    natures_protection        = Spell(454027),
+    rolling_thunder           = Spell(454026),
+    storm_swell               = Spell(455088),
+    stormcaller               = Spell(454021),
+    supercharge               = Spell(455110),
+    surging_currents          = Spell(454372),
+    tempest                   = Spell(454009),
+    unlimited_power           = Spell(454391),
+    voltaic_surge             = Spell(454919),
+}
+
+---@class EnhancementAura
+---@field amplification_core Spell
+---@field ancestral_guidance Spell
+---@field ancestral_protection Spell
+---@field arc_discharge Spell
+---@field arctic_snowstorm Spell
+---@field ascendance Spell
+---@field ashen_catalyst Spell
+---@field awakening_storms Spell
+---@field bloodlust Spell
+---@field counterstrike_totem Spell
+---@field crackling_surge Spell
+---@field crash_lightning Spell
+---@field cl_crash_lightning Spell
+---@field doom_winds_talent Spell
+---@field doom_winds_debuff Spell
+---@field doom_winds Spell
+---@field downpour Spell
+---@field earth_elemental Spell
+---@field earth_shield Spell
+---@field earthbind Spell
+---@field earthen_weapon Spell
+---@field earthgrab Spell
+---@field earthliving_weapon Spell
+---@field echoing_shock Spell
+---@field electrocute Spell
+---@field electroshock Spell
+---@field elemental_resistance Spell
+---@field far_sight Spell
+---@field feral_spirit Spell
+---@field flame_shock Spell
+---@field flametongue_weapon Spell
+---@field flurry Spell
+---@field frost_shock Spell
+---@field converging_storms Spell
+---@field ghost_wolf Spell
+---@field hailstorm Spell
+---@field healing_rain Spell
+---@field healing_stream Spell
+---@field hex Spell
+---@field hot_hand Spell
+---@field ice_strike_snare Spell
+---@field ice_strike Spell
+---@field icefury Spell
+---@field icy_edge Spell
+---@field immolate Spell
+---@field lashing_flames Spell
+---@field legacy_of_the_frost_witch Spell
+---@field lightning_lasso Spell
+---@field lightning_rod Spell
+---@field lightning_shield Spell
+---@field lively_totems Spell
+---@field maelstrom_weapon Spell
+---@field molten_weapon Spell
+---@field natures_swiftness Spell
+---@field pack_spirit Spell
+---@field poison_cleansing Spell
+---@field primal_lava_actuators Spell
+---@field primordial_wave Spell
+---@field riptide Spell
+---@field skyfury Spell
+---@field splintered_elements Spell
+---@field spirit_walk Spell
+---@field spiritwalkers_grace Spell
+---@field static_charge Spell
+---@field stone_bulwark Spell
+---@field storm_swell Spell
+---@field stormblast Spell
+---@field stormkeeper Spell
+---@field stormsurge Spell
+---@field sundering Spell
+---@field surging_currents Spell
+---@field tempest Spell
+---@field thunderous_paws Spell
+---@field thunderstorm Spell
+---@field tidecallers_guard Spell
+---@field totem_of_wrath Spell
+---@field totemic_rebound Spell
+---@field unleash_life Spell
+---@field unlimited_power Spell
+---@field voltaic_blaze Spell
+---@field water_walking Spell
+---@field whirling_air Spell
+---@field whirling_earth Spell
+---@field whirling_fire Spell
+---@field wind_barrier Spell
+---@field wind_rush Spell
+---@field windfury_weapon Spell
+---@field chains_of_devastation_cl Spell
+---@field chains_of_devastation_ch Spell
+
+local raw_auras = {
+    amplification_core        = 456369,
+    ancestral_guidance        = 108281,
+    ancestral_protection      = 207498,
+    arc_discharge             = 470532,
+    arctic_snowstorm          = 462765,
+    ascendance                = 114051,
+    ashen_catalyst            = 390371,
+    awakening_storms          = 462131,
+    bloodlust                 = 2825,
+    counterstrike_totem       = 208997,
+    crackling_surge           = 224127,
+    crash_lightning           = 187878,
+    cl_crash_lightning        = 333964,
+    doom_winds_talent         = 466772,
+    doom_winds_debuff         = 335904,
+    downpour                  = 207778,
+    earth_elemental           = 198103,
+    earth_shield              = 974,
+    earthbind                 = 3600,
+    earthen_weapon            = 392375,
+    earthgrab                 = 64695,
+    earthliving_weapon        = 382024,
+    echoing_shock             = 320125,
+    electrocute               = 206647,
+    electroshock              = 454025,
+    elemental_resistance      = 462568,
+    far_sight                 = 6196,
+    feral_spirit              = 333957,
+    flame_shock               = 188389,
+    flurry                    = 382889,
+    frost_shock               = 196840,
+    converging_storms         = 198300,
+    ghost_wolf                = 2645,
+    hailstorm                 = 334196,
+    healing_rain              = 73920,
+    healing_stream            = 5672,
+    hex                       = 51514,
+    hot_hand                  = 215785,
+    ice_strike_snare          = 342240,
+    ice_strike                = 384357,
+    icefury                   = 210714,
+    icy_edge                  = 224126,
+    immolate                  = 118297,
+    lashing_flames            = 334168,
+    legacy_of_the_frost_witch = 384451,
+    lightning_lasso           = 305485,
+    lightning_rod             = 197209,
+    lightning_shield          = 192106,
+    lively_totems             = 461242,
+    maelstrom_weapon          = 344179,
+    molten_weapon             = 224125,
+    natures_swiftness         = 378081,
+    pack_spirit               = 280205,
+    poison_cleansing          = 383014,
+    primal_lava_actuators     = 335896,
+    primordial_wave           = 375986,
+    riptide                   = 61295,
+    skyfury                   = 462854,
+    splintered_elements       = 382042,
+    spirit_walk               = 58875,
+    spiritwalkers_grace       = 79206,
+    static_charge             = 118905,
+    stone_bulwark             = 114893,
+    storm_swell               = 455089,
+    stormblast                = 470466,
+    stormkeeper               = 383009,
+    stormsurge                = 201846,
+    sundering                 = 197214,
+    surging_currents          = 454376,
+    tempest                   = 454015,
+    thunderous_paws           = 378076,
+    thunderstorm              = 51490,
+    tidecallers_guard         = 457496,
+    totem_of_wrath            = 208963,
+    totemic_rebound           = 458269,
+    unleash_life              = 73685,
+    unlimited_power           = 454394,
+    voltaic_blaze             = 470058,
+    water_walking             = 546,
+    whirling_air              = 453409,
+    whirling_earth            = 453406,
+    whirling_fire             = 453405,
+    wind_barrier              = 457387,
+    wind_rush                 = 192082,
+    chains_of_devastation_cl  = 336736,
+    chains_of_devastation_ch  = 336737,
+}
+
+local raw_spells = {
+    ancestral_guidance = 108281,
+    ascendance = 114051,
+    capacitor_totem = 192058,
+    chain_heal = 1064,
+    chain_lightning = 188443,
+    counterstrike_totem = 204331,
+    crash_lightning = 187874,
+    doom_winds = 384352,
+    earth_elemental = 198103,
+    earth_shield = 974,
+    earthbind_totem = 2484,
+    earthgrab_totem = 51485,
+    elemental_blast = 117014,
+    far_sight = 6196,
+    feral_lunge = 196884,
+    feral_spirit = 51533,
+    fire_nova = 333974,
+    flame_shock = 470411,
+    flametongue_weapon = 318038,
+    frost_shock = 196840,
+    ghost_wolf = 2645,
+    greater_purge = 378773,
+    gust_of_wind = 192063,
+    healing_stream_totem = 5394,
+    healing_surge = 8004,
+    ice_strike = 470194,
+    lava_burst = 51505,
+    lava_lash = 60103,
+    lightning_bolt = 188196,
+    tempest = 452201,
+    lightning_lasso = 305483,
+    lightning_shield = 192106,
+    natures_swiftness = 378081,
+    poison_cleansing_totem = 383013,
+    primal_strike = 73899,
+    primordial_wave = function() return FS.enhancement.talents.primordial_wave:is_learned() and 375982 or 326059 end,
+    purge = 370,
+    skyfury = 462854,
+    spirit_walk = 58875,
+    spiritwalkers_grace = 79206,
+    static_field_totem = 355580,
+    stone_bulwark_totem = 108270,
+    stormstrike = 17364,
+    sundering = 197214,
+    surging_totem = 444995,
+    thunderstorm = 51490,
+    totemic_projection = 108287,
+    totemic_recall = 108285,
+    tremor_totem = 8143,
+    unleash_shield = 356736,
+    water_walking = 546,
+    wind_rush_totem = 192077,
+    wind_shear = 57994,
+    windfury_weapon = 33757,
+    windstrike = 115356,
+}
+
+---@class EnhancementSpell
+---@field ancestral_guidance Spell
+---@field ascendance Spell
+---@field capacitor_totem Spell
+---@field chain_heal Spell
+---@field chain_lightning Spell
+---@field counterstrike_totem Spell
+---@field crash_lightning Spell
+---@field doom_winds Spell
+---@field earth_elemental Spell
+---@field earth_shield Spell
+---@field earthbind_totem Spell
+---@field earthgrab_totem Spell
+---@field elemental_blast Spell
+---@field far_sight Spell
+---@field feral_lunge Spell
+---@field feral_spirit Spell
+---@field fire_nova Spell
+---@field flame_shock Spell
+---@field flametongue_weapon Spell
+---@field frost_shock Spell
+---@field ghost_wolf Spell
+---@field greater_purge Spell
+---@field gust_of_wind Spell
+---@field healing_stream_totem Spell
+---@field healing_surge Spell
+---@field ice_strike Spell
+---@field lava_burst Spell
+---@field lava_lash Spell
+---@field lightning_bolt Spell
+---@field tempest Spell
+---@field lightning_lasso Spell
+---@field lightning_shield Spell
+---@field natures_swiftness Spell
+---@field poison_cleansing_totem Spell
+---@field primal_strike Spell
+---@field primordial_wave Spell
+---@field purge Spell
+---@field skyfury Spell
+---@field spirit_walk Spell
+---@field spiritwalkers_grace Spell
+---@field static_field_totem Spell
+---@field stone_bulwark_totem Spell
+---@field stormstrike Spell
+---@field sundering Spell
+---@field surging_totem Spell
+---@field thunderstorm Spell
+---@field totemic_projection Spell
+---@field totemic_recall Spell
+---@field tremor_totem Spell
+---@field unleash_shield Spell
+---@field water_walking Spell
+---@field wind_rush_totem Spell
+---@field wind_shear Spell
+---@field windfury_weapon Spell
+---@field windstrike Spell
+
+local function convert(id_table)
+    local auras = {}
+    for k, v in pairs(id_table) do
+        ---@diagnostic disable-next-line: missing-parameter
+        ---@type integer
+        local id = type(v) == "function" and v() or v
+        auras[k] = Spell(id)
+    end
+    return auras
+end
+
+---@type EnhancementTalent
+FS.enhancement.talents = raw_talents
+---@type EnhancementAura
+FS.enhancement.auras = convert(raw_auras)
+---@type EnhancementSpell
+FS.enhancement.spells = convert(raw_spells)
