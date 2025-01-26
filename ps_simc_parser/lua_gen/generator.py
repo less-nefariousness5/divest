@@ -4,15 +4,22 @@ Lua code generator for PS SimC Parser
 from typing import List, Dict, Any, Optional, Union
 from datetime import datetime
 from pathlib import Path
+import re
+import logging
+
 from ..api.mapping import (
-    logger, monitor, recovery, compatibility,
     convert_spell, convert_condition, convert_resource,
     RESOURCE_MAPPINGS, SpellMapping, ResourceMapping, SPELL_MAPPINGS
 )
 from ..api.validator import is_valid_condition, is_valid_spell
 from ..config import API_VERSION
+from ..utils.compatibility import compatibility
+from ..utils.monitor import monitor
+from ..utils.recovery import recovery
 from .templates import LuaTemplate
-import re
+
+# Set up logging
+logger = logging.getLogger(__name__)
 
 class GeneratorError(Exception):
     """Custom exception for generator errors"""
@@ -33,32 +40,34 @@ class LuaGenerator:
         self._cache = {}
         
     def generate(self, actions: List[Dict], context: Dict) -> str:
-        """Generate Lua code from SimC APL."""
-        # Validate API version
-        compatibility.check_version(API_VERSION)
-
-        # Start performance monitoring
-        monitor.start_operation('generate')
-
+        """Generate Lua code from SimC APL.
+        
+        Args:
+            actions: List of action dictionaries
+            context: Context dictionary containing metadata
+            
+        Returns:
+            Generated Lua code
+            
+        Raises:
+            GeneratorError: If code generation fails
+        """
         try:
-            # Generate Lua code
-            lua_code = self.template.render({
-                'metadata': self._generate_metadata(context),
-                'action_lists': self._generate_action_lists(actions),
-                'context': context
+            # Generate metadata
+            metadata = self._generate_metadata(context.get('metadata', {}))
+            
+            # Generate action lists
+            action_lists = self._generate_action_lists(actions)
+            
+            # Render template
+            return self.template.render({
+                'metadata': metadata,
+                'action_lists': action_lists
             })
-
-            # End performance monitoring
-            monitor.end_operation('generate')
-
-            return lua_code
-
-        except Exception as e:
-            # Handle errors
-            logger.error(f'Error generating Lua code: {e}')
-            recovery.handle_error(e)
+            
+        except (ValueError, KeyError) as e:
             raise GeneratorError(str(e))
-
+            
     def _generate_metadata(self, context: Dict) -> Dict:
         """Generate metadata for the Lua code."""
         metadata = {
@@ -74,131 +83,153 @@ class LuaGenerator:
         return metadata
 
     def _generate_action_lists(self, actions: Union[List[Dict], Dict]) -> Dict[str, str]:
-        """Generate Lua code for action lists.
+        """Generate action lists from SimC APL.
         
         Args:
             actions: Either a list of actions (for single action list) or
                     a dictionary of action lists (for multiple lists)
-        
+                    
         Returns:
-            Dictionary mapping action list names to their Lua code
+            Dictionary mapping action list names to Lua code
+            
+        Raises:
+            GeneratorError: If action list generation fails
         """
-        action_lists = {}
-        
         try:
-            # Case 1: Dictionary input (multiple action lists)
-            if isinstance(actions, dict):
-                for list_name, action_list in actions.items():
-                    action_lists[list_name] = self._generate_action_list(action_list)
-            # Case 2: List input (single action list)
-            elif isinstance(actions, list):
-                action_lists['default'] = self._generate_action_list(actions)
-            else:
-                raise GeneratorError(f'Invalid actions type: {type(actions)}')
+            # Handle single action list
+            if isinstance(actions, list):
+                return {'main': self._generate_action_list(actions)}
                 
-            return action_lists
+            # Handle multiple action lists
+            elif isinstance(actions, dict):
+                result = {}
+                for name, action_list in actions.items():
+                    result[name] = self._generate_action_list(action_list)
+                return result
+                
+            else:
+                raise GeneratorError(f"Invalid actions type: {type(actions)}")
+                
+        except GeneratorError as e:
+            raise GeneratorError(f"Failed to generate action lists: {e}")
             
         except Exception as e:
-            raise GeneratorError(f'Failed to generate action lists: {str(e)}')
-            
+            raise GeneratorError(f"Failed to generate action lists: {e}")
+
     def _generate_action_list(self, actions: List[Dict]) -> str:
-        """Generate Lua code for a single action list."""
-        lua_lines = []
+        """Generate a single action list."""
+        lua_code = []
         
-        # First pass: declare variables
         for action in actions:
-            if action['type'] == 'variable':
-                var_name = action['name']
-                if 'value' in action:
-                    lua_lines.append(f'local {var_name} = {action["value"]}')
+            action_type = action.get('type')
+            if action_type == 'spell':
+                spell_name = action.get('action')
+                if not spell_name:
+                    raise GeneratorError("Missing spell name")
                     
-        # Second pass: handle actions and variable operations
-        for action in actions:
-            if action['type'] == 'variable':
-                var_name = action['name']
-                if 'op' in action:
-                    op = action['op']
-                    if op == 'reset':
-                        lua_lines.append(f'{var_name} = {action["value"]}')
-                    elif op == 'set':
-                        lua_lines.append(f'{var_name} = {action["value"]}')
-                    elif op == 'setif':
-                        condition = action.get('conditions', [{}])[0]
-                        value = action['value']
-                        value_else = action.get('value_else', '0')
-                        lua_lines.append(f'{var_name} = {condition} and {value} or {value_else}')
-                    elif op in ['add', 'sub', 'mul', 'div']:
-                        op_map = {'add': '+', 'sub': '-', 'mul': '*', 'div': '/'}
-                        lua_lines.append(f'{var_name} = {var_name} {op_map[op]} {action["value"]}')
-                    elif op in ['max', 'min']:
-                        lua_lines.append(f'{var_name} = math.{op}({var_name}, {action["value"]})')
-            elif action['type'] == 'spell':
-                # Handle spell casts
-                spell_name = action['name']
-                if not is_valid_spell(spell_name):
-                    raise GeneratorError(f'Invalid spell: {spell_name}')
-                    
-                spell = convert_spell(spell_name)
-                conditions = []
+                try:
+                    spell = convert_spell(spell_name)
+                except ValueError as e:
+                    raise GeneratorError(f"Unknown spell: {spell_name}")
                 
-                # Add conditions
-                if 'conditions' in action:
-                    for condition in action['conditions']:
-                        if condition:
-                            conditions.append(convert_condition(condition))
-                            
-                # Add arguments as conditions
-                if 'args' in action:
-                    for key, value in action['args'].items():
-                        if key == 'if':
-                            conditions.append(convert_condition(value))
-                            
-                # Generate condition string
-                condition_str = ' and '.join(conditions) if conditions else 'true'
+                conditions = action.get('conditions', [])
+                lua_conditions = []
                 
-                # Generate spell cast
-                lua_lines.append(f'if {condition_str} then')
-                lua_lines.append(f'    return {spell}')
-                lua_lines.append('end')
+                for condition in conditions:
+                    try:
+                        lua_condition = self._convert_condition(condition)
+                        lua_conditions.append(lua_condition)
+                    except ValueError as e:
+                        raise GeneratorError(f"Failed to convert condition: {condition}")
                 
-        return '\n'.join(lua_lines)
-
-    def _convert_conditions(self, conditions: List[str]) -> str:
-        """Convert SimC conditions to Lua conditions."""
-        converted = []
-        
-        for condition in conditions:
-            try:
-                # Convert condition using API mapping
-                converted_condition = convert_condition(condition)
-                converted.append(converted_condition)
-            except ValueError as e:
-                # Handle special cases not covered by convert_condition
-                if 'active_enemies' in condition:
-                    # Parse active_enemies condition (e.g., "active_enemies>=3")
-                    parts = condition.split('active_enemies')
-                    if len(parts) == 2:
-                        operator = parts[1][:2] if any(op in parts[1][:2] for op in ['>=', '<=', '==']) else parts[1][0]
-                        value = parts[1][2:] if len(operator) == 2 else parts[1][1:]
-                        converted.append(f"Enemies:Count() {operator} {value}")
-                elif 'soul_fragments' in condition:
-                    # Parse soul_fragments condition (e.g., "soul_fragments>=4")
-                    parts = condition.split('soul_fragments')
-                    if len(parts) == 2:
-                        operator = parts[1][:2] if any(op in parts[1][:2] for op in ['>=', '<=', '==']) else parts[1][0]
-                        value = parts[1][2:] if len(operator) == 2 else parts[1][1:]
-                        converted.append(f"Player:SoulFragments() {operator} {value}")
-                elif 'fury' in condition:
-                    # Parse fury condition (e.g., "fury>=60")
-                    parts = condition.split('fury')
-                    if len(parts) == 2:
-                        operator = parts[1][:2] if any(op in parts[1][:2] for op in ['>=', '<=', '==']) else parts[1][0]
-                        value = parts[1][2:] if len(operator) == 2 else parts[1][1:]
-                        converted.append(f"Player:Fury() {operator} {value}")
+                if lua_conditions:
+                    condition_str = ' and '.join(lua_conditions)
+                    lua_code.append(f"if {condition_str} then")
+                
+                lua_code.append(f"    if Spell.{spell.ps_name}:IsReady() then")
+                if spell_name == 'sigil_of_flame':
+                    lua_code.append(f"        return Cast(Spell.{spell.ps_name}, 'ground')")
                 else:
-                    raise GeneratorError(f"Failed to convert condition: {condition}")
+                    lua_code.append(f"        return Cast(Spell.{spell.ps_name})")
+                lua_code.append("    end")
+                
+                if lua_conditions:
+                    lua_code.append("end")
+            
+            elif action_type == 'variable':
+                lua_code.append(self._generate_variable_action(action))
+                
+            else:
+                raise GeneratorError(f"Unknown action type: {action_type}")
+        
+        return '\n'.join(lua_code)
 
-        return f"['{' and '.join(converted)}']" if converted else "[]"
+    def _convert_condition(self, condition: str) -> str:
+        """Convert a SimC condition to Lua code.
+        
+        Args:
+            condition: SimC condition string
+            
+        Returns:
+            Lua condition string
+            
+        Raises:
+            ValueError: If condition cannot be converted
+        """
+        if not condition or condition.isspace():
+            raise ValueError(f"Invalid condition: {condition}")
+            
+        # First handle variables/functions
+        var_mappings = {
+            'soul_fragments': 'Player.SoulFragments',
+            'buff.metamorphosis.up': 'Player:BuffUp(Spell.Metamorphosis)',
+            'target.time_to_die': 'Target.TimeToDie',
+            'debuff.sigil_of_flame.up': 'Target:DebuffUp(Spell.SigilOfFlame)',
+        }
+        
+        result = condition
+        
+        # 1. Handle negation first
+        result = result.replace('!', 'not ')
+        
+        # 2. Replace variables
+        for simc_var, lua_var in var_mappings.items():
+            result = result.replace(simc_var, lua_var)
+        
+        # 3. Handle operators
+        # First normalize all operators by adding spaces
+        result = re.sub(r'([<>=!]+)', r' \1 ', result)
+        result = re.sub(r'\s+', ' ', result).strip()
+        
+        # Now handle each operator while preserving spaces
+        result = result.replace(' >= ', ' >= ')  # Keep spaces
+        result = result.replace(' <= ', ' <= ')  # Keep spaces
+        result = result.replace(' > ', ' > ')    # Keep spaces
+        result = result.replace(' < ', ' < ')    # Keep spaces
+        result = result.replace(' = ', ' == ')   # Convert = to ==
+        result = result.replace(' ! ', ' != ')   # Convert ! to !=
+        
+        # 4. Handle special cases
+        result = result.replace('not ==', '~=')
+        result = result.replace('not =', '~=')
+        result = result.replace('not not', '')
+        
+        # 5. Clean up spaces
+        parts = []
+        for part in result.split():
+            if part in ('and', 'or', 'not'):
+                parts.append(part)
+            else:
+                parts.append(part)
+        
+        # Join with spaces
+        result = ' '.join(parts)
+        
+        # 6. Validate result
+        if not result or result.isspace():
+            raise ValueError(f"Failed to convert condition: {condition}")
+            
+        return result
 
     def _generate_variable_action(self, action):
         """Generate Lua code for variable actions."""
