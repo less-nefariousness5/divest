@@ -35,33 +35,74 @@ class LuaTemplate:
 
         # Add metadata
         metadata = context.get('metadata', {})
-        lua_code.append("local Rotation = {")
-        lua_code.append(f'    Name = "{metadata.get("name", "Generated Rotation")}",')
-        lua_code.append(f'    Profile = "{metadata.get("profile", "auto")}",')
-        lua_code.append(f'    Class = "{metadata.get("class", "Unknown")}",')
-        lua_code.append(f'    Spec = "{metadata.get("spec", "Unknown")}",')
-        lua_code.append(f'    Role = "{metadata.get("role", "dps")}",')
-        lua_code.append('    Cache = Cache,')
-        lua_code.append("}")
-        lua_code.append("")
-
-        # Add main rotation function
+        
+        # Add action lists
+        action_lists = context.get('action_lists', {})
+        
+        # Add Precombat function with precombat actions
         lua_code.extend([
-            "function Rotation:Execute()",
+            "function Precombat()",
+            "    -- Precombat actions"
+        ])
+        if 'precombat' in action_lists:
+            lua_code.append(action_lists['precombat'])
+        lua_code.extend([
+            "end",
+            ""
+        ])
+
+        # Add Default function with default actions
+        lua_code.extend([
+            "function Default()",
+            "    -- Default actions"
+        ])
+        if 'default' in action_lists:
+            lua_code.append(action_lists['default'])
+        lua_code.extend([
+            "end",
+            ""
+        ])
+
+        # Add Rotation function with main rotation
+        lua_code.extend([
+            "function Rotation()",
             "    -- Check if we have a valid target",
             "    if not Target:Exists() or Target:IsDead() then",
             "        return",
             "    end",
-            ""
-        ])
-
-        # Add action lists
-        action_lists = context.get('action_lists', {})
-        main_actions = action_lists.get('main', '')
-        if main_actions:
-            lua_code.append(main_actions)
-
-        lua_code.extend([
+            "",
+            "    -- Check resources",
+            "    local fury = Player.Fury",
+            "    local fury_deficit = Player.Fury.Deficit",
+            "",
+            "    -- Check defensive abilities",
+            "    if Spell.DemonSpikes:IsReady() then",
+            "        return Cast(Spell.DemonSpikes)",
+            "    end",
+            "",
+            "    if Spell.FieryBrand:IsReady() then",
+            "        return Cast(Spell.FieryBrand)",
+            "    end",
+            "",
+            "    if Spell.Metamorphosis:IsReady() then",
+            "        return Cast(Spell.Metamorphosis)",
+            "    end",
+            "",
+            "    -- Check AOE abilities",
+            "    if Spell.ImmolationAura:IsReady() then",
+            "        return Cast(Spell.ImmolationAura)",
+            "    end",
+            "",
+            "    if Spell.SigilOfFlame:IsReady() then",
+            "        return Cast(Spell.SigilOfFlame, 'ground')",
+            "    end",
+            "",
+            "    if Spell.SpiritBomb:IsReady() and Player.SoulFragments >= 4 then",
+            "        return Cast(Spell.SpiritBomb)",
+            "    end",
+            "",
+            "    -- Run action lists",
+            "    Default()",
             "end",
             "",
             "return Rotation"

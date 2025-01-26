@@ -25,8 +25,11 @@ SPELL_MAPPINGS: Dict[str, SpellMapping] = {
     'wait': SpellMapping('Wait', 'Wait', spell_id=0),
     'call_action_list': SpellMapping('CallActionList', 'CallActionList', spell_id=0),
     'run_action_list': SpellMapping('RunActionList', 'RunActionList', spell_id=0),
+    'bulk_extraction': SpellMapping('BulkExtraction', 'BulkExtraction', spell_id=320341),
+    'reavers_glaive': SpellMapping('ReaversGlaive', 'ReaversGlaive', spell_id=389693),
+    'vengeful_retreat': SpellMapping('VengefulRetreat', 'VengefulRetreat', spell_id=198793),
     
-    # Demon Hunter spells
+    # Demon Hunter spells - Core Abilities
     'spirit_bomb': SpellMapping('SpiritBomb', 'SpiritBomb', spell_id=247454),
     '/spirit_bomb': SpellMapping('SpiritBomb', 'SpiritBomb', spell_id=247454),
     'fel_devastation': SpellMapping('FelDevastation', 'FelDevastation', spell_id=212084),
@@ -56,6 +59,22 @@ SPELL_MAPPINGS: Dict[str, SpellMapping] = {
     'empower_wards': SpellMapping('EmpowerWards', 'EmpowerWards', spell_id=218256),
     '/empower_wards': SpellMapping('EmpowerWards', 'EmpowerWards', spell_id=218256),
     
+    # New Vengeance Spells
+    'spirit_burst': SpellMapping('SpiritBurst', 'SpiritBurst', spell_id=390163),
+    '/spirit_burst': SpellMapping('SpiritBurst', 'SpiritBurst', spell_id=390163),
+    'soul_sunder': SpellMapping('SoulSunder', 'SoulSunder', spell_id=388106),
+    '/soul_sunder': SpellMapping('SoulSunder', 'SoulSunder', spell_id=388106),
+    'sigil_of_spite': SpellMapping('SigilOfSpite', 'SigilOfSpite', spell_id=389807),
+    '/sigil_of_spite': SpellMapping('SigilOfSpite', 'SigilOfSpite', spell_id=389807),
+    'sigil_of_doom': SpellMapping('SigilOfDoom', 'SigilOfDoom', spell_id=389808),
+    '/sigil_of_doom': SpellMapping('SigilOfDoom', 'SigilOfDoom', spell_id=389808),
+    'soul_carver': SpellMapping('SoulCarver', 'SoulCarver', spell_id=207407),
+    '/soul_carver': SpellMapping('SoulCarver', 'SoulCarver', spell_id=207407),
+    'fel_desolation': SpellMapping('FelDesolation', 'FelDesolation', spell_id=389985),
+    '/fel_desolation': SpellMapping('FelDesolation', 'FelDesolation', spell_id=389985),
+    'the_hunt': SpellMapping('TheHunt', 'TheHunt', spell_id=370965),
+    '/the_hunt': SpellMapping('TheHunt', 'TheHunt', spell_id=370965),
+    
     # Mage spells (keeping these for reference)
     'fireball': SpellMapping('Fireball', 'Fireball', spell_id=133),
     'frostbolt': SpellMapping('Frostbolt', 'Frostbolt', spell_id=116),
@@ -68,7 +87,12 @@ def convert_spell(simc_spell: str) -> Optional[SpellMapping]:
     # Remove leading slash if present
     if simc_spell.startswith('/'):
         simc_spell = simc_spell[1:]
-    return SPELL_MAPPINGS.get(simc_spell.lower())
+    # Convert to lowercase for case-insensitive lookup
+    simc_spell = simc_spell.lower()
+    mapping = SPELL_MAPPINGS.get(simc_spell)
+    if mapping is None:
+        raise ValueError(f"Unknown spell: {simc_spell}")
+    return mapping
 
 
 class Spells:
