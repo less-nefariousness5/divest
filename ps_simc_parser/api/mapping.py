@@ -9,98 +9,29 @@ from datetime import datetime
 import re
 from .validator import is_valid_condition
 from .resources import RESOURCE_MAPPINGS
-from .spells import convert_spell, SpellMapping, SPELL_MAPPINGS
-
-@dataclass
-class SpellMapping:
-    """Mapping for spell names and IDs"""
-    simc_name: str
-    ps_name: str
-    spell_id: int
-
-@dataclass
-class ResourceMapping:
-    """Mapping for resource types"""
-    simc_name: str
-    ps_getter: str
+from .spells import SpellMapping, SPELL_MAPPINGS, convert_spell
 
 # Define core mappings
-SPELL_MAPPINGS = {
-    # Consumables and utility actions
-    'flask': SpellMapping('Flask', 'UseFlask', spell_id=0),
-    'augmentation': SpellMapping('Augmentation', 'UseAugmentation', spell_id=0),
-    'food': SpellMapping('Food', 'UseFood', spell_id=0),
-    'snapshot_stats': SpellMapping('SnapshotStats', 'SnapshotStats', spell_id=0),
-    'potion': SpellMapping('Potion', 'UsePotion', spell_id=0),
-    'use_item': SpellMapping('UseItem', 'UseItem', spell_id=0),
-    'auto_attack': SpellMapping('AutoAttack', 'AutoAttack', spell_id=0),
-    'wait': SpellMapping('Wait', 'Wait', spell_id=0),
-    'call_action_list': SpellMapping('CallActionList', 'CallActionList', spell_id=0),
-    'run_action_list': SpellMapping('RunActionList', 'RunActionList', spell_id=0),
-    
-    # Demon Hunter spells
-    'spirit_bomb': SpellMapping('SpiritBomb', 'SpiritBomb', spell_id=247454),
-    '/spirit_bomb': SpellMapping('SpiritBomb', 'SpiritBomb', spell_id=247454),
-    'fel_devastation': SpellMapping('FelDevastation', 'FelDevastation', spell_id=212084),
-    '/fel_devastation': SpellMapping('FelDevastation', 'FelDevastation', spell_id=212084),
-    'metamorphosis': SpellMapping('Metamorphosis', 'Metamorphosis', spell_id=187827),
-    '/metamorphosis': SpellMapping('Metamorphosis', 'Metamorphosis', spell_id=187827),
-    'demon_spikes': SpellMapping('DemonSpikes', 'DemonSpikes', spell_id=203720),
-    '/demon_spikes': SpellMapping('DemonSpikes', 'DemonSpikes', spell_id=203720),
-    'fiery_brand': SpellMapping('FieryBrand', 'FieryBrand', spell_id=204021),
-    '/fiery_brand': SpellMapping('FieryBrand', 'FieryBrand', spell_id=204021),
-    'infernal_strike': SpellMapping('InfernalStrike', 'InfernalStrike', spell_id=189110),
-    '/infernal_strike': SpellMapping('InfernalStrike', 'InfernalStrike', spell_id=189110),
-    'sigil_of_flame': SpellMapping('SigilOfFlame', 'SigilOfFlame', spell_id=204596),
-    '/sigil_of_flame': SpellMapping('SigilOfFlame', 'SigilOfFlame', spell_id=204596),
-    'throw_glaive': SpellMapping('ThrowGlaive', 'ThrowGlaive', spell_id=204157),
-    '/throw_glaive': SpellMapping('ThrowGlaive', 'ThrowGlaive', spell_id=204157),
-    'immolation_aura': SpellMapping('ImmolationAura', 'ImmolationAura', spell_id=258920),
-    '/immolation_aura': SpellMapping('ImmolationAura', 'ImmolationAura', spell_id=258920),
-    'soul_cleave': SpellMapping('SoulCleave', 'SoulCleave', spell_id=228477),
-    '/soul_cleave': SpellMapping('SoulCleave', 'SoulCleave', spell_id=228477),
-    'fracture': SpellMapping('Fracture', 'Fracture', spell_id=263642),
-    '/fracture': SpellMapping('Fracture', 'Fracture', spell_id=263642),
-    'shear': SpellMapping('Shear', 'Shear', spell_id=203782),
-    '/shear': SpellMapping('Shear', 'Shear', spell_id=203782),
-    'felblade': SpellMapping('Felblade', 'Felblade', spell_id=232893),
-    '/felblade': SpellMapping('Felblade', 'Felblade', spell_id=232893),
-    'empower_wards': SpellMapping('EmpowerWards', 'EmpowerWards', spell_id=218256),
-    '/empower_wards': SpellMapping('EmpowerWards', 'EmpowerWards', spell_id=218256),
-    
-    # Mage spells (keeping these for reference)
-    'fireball': SpellMapping('Fireball', 'Fireball', spell_id=133),
-    'frostbolt': SpellMapping('Frostbolt', 'Frostbolt', spell_id=116),
-    'arcane_blast': SpellMapping('ArcaneBlast', 'ArcaneBlast', spell_id=30451),
-}
-
-RESOURCE_MAPPINGS: Dict[str, ResourceMapping] = {
-    'fury': ResourceMapping(
-        simc_name='fury',
-        ps_getter='Player.Fury'
-    ),
-    'energy': ResourceMapping(
-        simc_name='energy',
-        ps_getter='Player.Energy'
-    ),
-    'mana': ResourceMapping(
-        simc_name='mana',
-        ps_getter='Player.Mana'
-    ),
-    'soul_fragments': ResourceMapping(
-        simc_name='soul_fragments',
-        ps_getter='Player.SoulFragments'
-    ),
+RESOURCE_MAPPINGS: Dict[str, Dict] = {
+    'fury': {
+        'simc_name': 'fury',
+        'ps_getter': 'Player.Fury'
+    },
+    'energy': {
+        'simc_name': 'energy',
+        'ps_getter': 'Player.Energy'
+    },
+    'mana': {
+        'simc_name': 'mana',
+        'ps_getter': 'Player.Mana'
+    },
+    'soul_fragments': {
+        'simc_name': 'soul_fragments',
+        'ps_getter': 'Player.SoulFragments'
+    },
 }
 
 # Conversion functions
-def convert_spell(simc_spell: str) -> Optional[SpellMapping]:
-    """Convert SimC spell name to PS spell"""
-    # Remove leading slash if present
-    if simc_spell.startswith('/'):
-        simc_spell = simc_spell[1:]
-    return SPELL_MAPPINGS.get(simc_spell.lower())
-
 def convert_condition(condition: str) -> str:
     """Convert a SimC condition to PS condition."""
     if not condition:
@@ -148,7 +79,7 @@ def convert_condition(condition: str) -> str:
 def convert_resource(resource: str) -> Optional[str]:
     """Convert SimC resource name to PS resource getter"""
     mapping = RESOURCE_MAPPINGS.get(resource.lower())
-    return mapping.ps_getter if mapping else None
+    return mapping['ps_getter'] if mapping else None
 
 def convert_buff(buff: str) -> str:
     """Convert SimC buff name to PS buff check"""

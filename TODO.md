@@ -117,7 +117,10 @@
       - [x] Movement phase handling
       - [x] Cooldown desync recovery
       - [x] Resource capping prevention
-  
+    - [x] Fixed test_actions.py failures
+      - [x] Fixed Lua condition formatting
+      - [x] Added Spells class for dynamic spell access
+      - [x] Fixed circular imports in API modules
   - [x] Performance Testing
     - [x] CPU Usage Benchmarks
       - [x] Single target rotation (1, 3, 5 minute samples)

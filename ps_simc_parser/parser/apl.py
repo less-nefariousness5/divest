@@ -2,14 +2,87 @@
 APL (Action Priority List) parser for PS SimC Parser
 """
 from typing import List, Dict, Any, Optional
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 
 @dataclass
 class Action:
-    """Represents a single APL action"""
-    name: str
-    conditions: List[str]
-    args: Dict[str, Any]
+    """Represents a single action in the SimC APL"""
+    action_str: str
+    conditions: List[str] = field(default_factory=list)
+    spell_name: Optional[str] = None
+    target: Optional[str] = None
+    var_name: Optional[str] = None
+    var_value: Optional[str] = None
+    var_op: Optional[str] = None
+    pool_for_next: bool = False
+    pool_extra_amount: Optional[int] = None
+    action_list_name: Optional[str] = None
+    
+    def __post_init__(self):
+        self._parse_action()
+        
+    def _parse_action(self):
+        """Parse the action string into components"""
+        # Split into parts
+        parts = self.action_str.split(',')
+        
+        # First part is the action name/type
+        action_type = parts[0].strip()
+        
+        # Parse remaining parameters
+        for part in parts[1:]:
+            if '=' not in part:
+                continue
+                
+            key, value = part.split('=', 1)
+            key = key.strip()
+            value = value.strip()
+            
+            if key == 'if':
+                self.conditions = self._parse_conditions(value)
+            elif key == 'name':
+                self.var_name = value
+            elif key == 'value':
+                self.var_value = value
+            elif key == 'op':
+                self.var_op = value
+            elif key == 'for_next':
+                self.pool_for_next = value.lower() == 'true'
+            elif key == 'extra_amount':
+                self.pool_extra_amount = int(value)
+            elif key == 'target':
+                self.target = value
+                
+    def _parse_conditions(self, condition_str: str) -> List[str]:
+        """Parse conditions from a condition string"""
+        if not condition_str:
+            return []
+            
+        conditions = []
+        current = ''
+        paren_count = 0
+        
+        for char in condition_str:
+            if char == '(':
+                paren_count += 1
+            elif char == ')':
+                paren_count -= 1
+            elif char == '&' and paren_count == 0:
+                if current:
+                    conditions.append(current.strip())
+                current = ''
+                continue
+                
+            current += char
+            
+        if current:
+            conditions.append(current.strip())
+            
+        return conditions
+        
+    def has_conditions(self) -> bool:
+        """Check if this action has conditions"""
+        return bool(self.conditions)
 
 class APLParser:
     """Parser for SimC APL syntax"""
@@ -137,7 +210,7 @@ class APLParser:
                                 
                             args[arg_parts[0].strip()] = arg_parts[1].strip()
             
-            action = Action(name=action_name, conditions=conditions, args=args)
+            action = Action(action_str=line)
             actions.append(action)
             
         return actions

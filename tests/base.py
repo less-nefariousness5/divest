@@ -5,17 +5,18 @@ import unittest
 import json
 from pathlib import Path
 from ps_simc_parser.parser import Parser
-from ps_simc_parser.lua_gen import LuaGenerator
+from ps_simc_parser.utils.lua import LuaGenerator
 import lupa
 from ps_simc_parser.api.mapping import logger, monitor
 from typing import Any, Dict
 import os
+from ps_simc_parser.parser.parser import ParserContext
 
 class PSTestCase(unittest.TestCase):
     """Base test class with common test functionality"""
     
     def setUp(self):
-        """Set up test case with parser and generator"""
+        """Set up test case with parser, generator, and default context"""
         self.parser = Parser()
         self.generator = LuaGenerator()
         self.lua = lupa.LuaRuntime()
@@ -26,6 +27,14 @@ class PSTestCase(unittest.TestCase):
         
         # Reset performance monitor
         monitor.reset_metrics()
+        
+        self.default_context = {
+            'name': 'Test Rotation',
+            'class': 'demonhunter',
+            'spec': 'vengeance',
+            'role': 'tank',
+            'level': 70
+        }
         
     def tearDown(self):
         """Clean up after test"""
@@ -56,7 +65,7 @@ class PSTestCase(unittest.TestCase):
         path.write_text(content)
         return path
         
-    def assertLuaValid(self, lua_code):
+    def assertLuaValid(self, lua_code: str):
         """Assert that Lua code is syntactically valid"""
         try:
             # Create mock PS table with required functions
