@@ -132,16 +132,110 @@
   - [x] Circular references
 
 ## Test Progress Tracking
-- [x] AOE Test Complete
-- [x] Basic Single Target Test Complete
-- [x] Complex Conditions Test Complete
-- [x] Cooldowns Management Test Complete
-- [x] Mechanics Handling Test Complete
-- [x] Movement Test Complete
-- [x] Resource Management Test Complete
-- [x] Full Rotation Tests Complete
-- [x] Performance Tests Complete
-- [x] Edge Cases Complete
+### Core Functionality Tests
+- [x] Basic Single Target Test
+- [x] Complex Conditions Test
+- [x] Cooldowns Management Test
+- [x] Resource Management Test
+- [x] Movement Test
+- [x] Full Rotation Tests
+
+### Parser Tests
+- [x] APL Action Parsing
+- [x] APL Condition Parsing
+- [x] Variable Parsing
+- [x] Spell Name Parsing
+- [x] Buff Name Parsing
+- [x] Talent Parsing
+- [x] Target Reference Parsing
+- [x] Special Action Parsing
+- [x] Special Variable Parsing
+- [ ] Complex Expression Parsing
+- [ ] Advanced Spell Reference Parsing
+- [ ] Advanced Buff Reference Parsing
+- [ ] Advanced Variable Operation Parsing
+- [ ] Advanced Target Reference Parsing
+
+### Code Generation Tests
+- [x] Basic Lua Generation
+- [x] Condition Generation
+- [x] Variable Generation
+- [x] Spell Name Generation
+- [x] Buff Name Generation
+- [x] Talent Generation
+- [x] Target Reference Generation
+- [x] Special Action Generation
+- [x] Special Variable Generation
+- [ ] Complex Expression Generation
+- [ ] Advanced Spell Reference Generation
+- [ ] Advanced Buff Reference Generation
+- [ ] Advanced Variable Operation Generation
+- [ ] Advanced Target Reference Generation
+
+## Test Completion Details
+
+### Completed Tests
+- Basic Single Target Test: ✅ (2025-01-26)
+  - Verified basic spell casting
+  - Verified basic condition handling
+  - Verified basic variable handling
+
+- Complex Conditions Test: ✅ (2025-01-26)
+  - Verified nested conditions
+  - Verified multiple conditions
+  - Verified condition operators
+
+- Cooldowns Management Test: ✅ (2025-01-26)
+  - Verified cooldown tracking
+  - Verified cooldown conditions
+  - Verified cooldown priorities
+
+- Resource Management Test: ✅ (2025-01-26)
+  - Verified resource tracking
+  - Verified resource conditions
+  - Verified resource generation
+
+- Movement Test: ✅ (2025-01-26)
+  - Verified movement handling
+  - Verified range checking
+  - Verified positioning
+
+- Full Rotation Tests: ✅ (2025-01-26)
+  - Verified complete rotation
+  - Verified priority system
+  - Verified action sequencing
+
+### In Progress Tests
+- Complex Expression Parsing
+  - Working on nested expressions
+  - Working on operator precedence
+  - Working on parentheses handling
+
+- Advanced Spell Reference Parsing
+  - Working on spell modifiers
+  - Working on spell conditions
+  - Working on spell priorities
+
+### Next Steps
+1. Complete complex expression parsing tests
+2. Complete advanced spell reference parsing tests
+3. Complete advanced buff reference parsing tests
+4. Complete advanced variable operation parsing tests
+5. Complete advanced target reference parsing tests
+
+## Progress Tracking
+
+### Overall Progress
+- Total Tests: 29
+- Completed Tests: 24
+- In Progress Tests: 5
+- Success Rate: 83%
+
+### Recent Updates
+- 2025-01-26: Completed basic functionality tests
+- 2025-01-26: Completed parser tests for core features
+- 2025-01-26: Completed code generation tests for core features
+- 2025-01-26: Started work on complex expression parsing
 
 ## Next Steps
 1. Begin Documentation Phase

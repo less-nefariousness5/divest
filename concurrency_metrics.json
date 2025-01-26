@@ -1,0 +1,9 @@
+{"timestamp": 1737914693.9994793, "num_workers": 2, "total_time": 0.003505229949951172, "throughput": 570.5759760576792, "completed_tasks": 2}
+{"timestamp": 1737914694.000479, "num_workers": 4, "total_time": 0.0009996891021728516, "throughput": 4001.243978058669, "completed_tasks": 4}
+{"timestamp": 1737914694.0014946, "num_workers": 8, "total_time": 0.0005099773406982422, "throughput": 15686.971482000936, "completed_tasks": 8}
+{"timestamp": 1737914721.7984421, "num_workers": 2, "total_time": 0.0034072399139404297, "throughput": 586.985375411098, "completed_tasks": 2}
+{"timestamp": 1737914721.7994459, "num_workers": 4, "total_time": 0.0010037422180175781, "throughput": 3985.0869358669834, "completed_tasks": 4}
+{"timestamp": 1737914721.8015254, "num_workers": 8, "total_time": 0.002079486846923828, "throughput": 3847.1029580371473, "completed_tasks": 8}
+{"timestamp": 1737914755.306559, "num_workers": 2, "total_time": 0.0020003318786621094, "throughput": 999.8340882002384, "completed_tasks": 2}
+{"timestamp": 1737914755.3085587, "num_workers": 4, "total_time": 0.0009999275207519531, "throughput": 4000.289938006676, "completed_tasks": 4}
+{"timestamp": 1737914755.3105586, "num_workers": 8, "total_time": 0.0019998550415039062, "throughput": 4000.289938006676, "completed_tasks": 8}

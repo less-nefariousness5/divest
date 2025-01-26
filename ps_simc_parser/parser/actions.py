@@ -1,192 +1,65 @@
 """
-Action parser for converting SimC actions to PS Lua
+Action parser module for PS SimC Parser
 """
-from typing import List, Dict, Any, Optional
+from typing import Dict, Any, List, Optional
 from dataclasses import dataclass, field
-from enum import Enum, auto
 import re
-
-class ActionType(Enum):
-    """Types of actions supported by the parser"""
-    SPELL = auto()
-    VARIABLE = auto()
-    POOL = auto()
-    CALL_ACTION_LIST = auto()
-    RUN_ACTION_LIST = auto()
 
 @dataclass
 class Action:
-    """Represents a single action in the SimC APL"""
-    name: str
-    conditions: List[str] = field(default_factory=list)
-    args: Dict[str, Any] = field(default_factory=dict)
-    comment: Optional[str] = None
-    line_number: Optional[int] = None
-    target_condition: Optional[str] = None
-    cycle_targets: bool = False
-    
-    def __init__(self, action_str: str):
-        """Parse action string into components"""
-        self.name = ''
-        self.conditions = []
-        self.args = {}
-        self.comment = None
-        self.line_number = None
-        self.target_condition = None
-        self.cycle_targets = False
-        
-        # Split action string into parts
-        parts = action_str.split(',')
-        
-        # Parse first part as name
-        first_part = parts[0].strip()
-        if first_part.startswith('/'):
-            first_part = first_part[1:]  # Remove leading /
-        self.name = first_part
-        
-        # Parse remaining parts
-        for part in parts[1:]:
-            if not part:
-                continue
-                
-            if '=' in part:
-                key, value = part.split('=', 1)
-                key = key.strip()
-                value = value.strip()
-                
-                if key == 'if':
-                    # Split conditions on & and |
-                    conditions = value.split('&')
-                    self.conditions = [c.strip() for c in conditions if c.strip()]
-                elif key == 'target_if':
-                    self.target_condition = value
-                elif key == 'cycle_targets':
-                    self.cycle_targets = bool(int(value))
-                else:
-                    # Try to convert numeric values
-                    try:
-                        if '.' in value:
-                            value = float(value)
-                        else:
-                            value = int(value)
-                    except ValueError:
-                        pass
-                    self.args[key] = value
-    
-    @property
-    def action_type(self) -> ActionType:
-        """Get the type of this action"""
-        if self.name.startswith('variable'):
-            return ActionType.VARIABLE
-        elif self.name.startswith('pool_resource'):
-            return ActionType.POOL
-        elif self.name.startswith('call_action_list'):
-            return ActionType.CALL_ACTION_LIST
-        elif self.name.startswith('run_action_list'):
-            return ActionType.RUN_ACTION_LIST
-        else:
-            return ActionType.SPELL
-            
-    @property
-    def spell_name(self) -> Optional[str]:
-        """Get the spell name for this action"""
-        if self.action_type == ActionType.SPELL:
-            return self.name
-        return None
-        
-    @property
-    def var_name(self) -> Optional[str]:
-        """Get the variable name for this action"""
-        if self.action_type == ActionType.VARIABLE:
-            return self.args.get('name')
-        return None
-        
-    @property
-    def var_value(self) -> Optional[str]:
-        """Get the variable value for this action"""
-        if self.action_type == ActionType.VARIABLE:
-            return self.args.get('value')
-        return None
-        
-    @property
-    def var_op(self) -> Optional[str]:
-        """Get the variable operation for this action"""
-        if self.action_type == ActionType.VARIABLE:
-            return self.args.get('op')
-        return None
-        
-    @property
-    def pool_for_next(self) -> bool:
-        """Check if this action pools for next action"""
-        if self.action_type == ActionType.POOL:
-            return self.args.get('for_next', False)
-        return False
-        
-    @property
-    def pool_extra_amount(self) -> Optional[int]:
-        """Get the extra amount to pool"""
-        if self.action_type == ActionType.POOL:
-            return self.args.get('extra_amount')
-        return None
-        
-    @property
-    def action_list_name(self) -> Optional[str]:
-        """Get the name of the action list to call/run"""
-        if self.action_type in (ActionType.CALL_ACTION_LIST, ActionType.RUN_ACTION_LIST):
-            return self.args.get('name')
-        return None
-            
-    @property
-    def strict(self) -> bool:
-        """Get strict flag for run_action_list"""
-        if self.action_type == ActionType.RUN_ACTION_LIST:
-            return bool(self.args.get('strict', False))
-        return False
-        
-    def has_conditions(self) -> bool:
-        """Check if this action has conditions"""
-        return bool(self.conditions)
-        
-    def is_valid(self) -> bool:
-        """Check if this action is valid"""
-        # Basic validation
-        if not self.name:
-            return False
-            
-        # Action-specific validation
-        if self.action_type == ActionType.VARIABLE:
-            return bool(self.var_name)
-        elif self.action_type == ActionType.POOL:
-            return True  # No specific requirements
-        elif self.action_type in (ActionType.CALL_ACTION_LIST, ActionType.RUN_ACTION_LIST):
-            return bool(self.action_list_name)
-        else:
-            return True  # Spell actions just need a name
-
-class ActionList:
-    """Represents a list of actions in the SimC APL"""
-    
-    def __init__(self, name: str, preconditions: Optional[str] = None):
-        self.name = name
-        self.preconditions = preconditions
-        self.actions: List[Action] = []
-        
-    def add_action(self, action: Action):
-        """Add an action to this list"""
-        self.actions.append(action)
-        
-    def __str__(self) -> str:
-        return f"ActionList({self.name}, actions={len(self.actions)})"
-        
-    def __repr__(self) -> str:
-        return self.__str__()
+    """Represents a parsed action"""
+    action_type: str  # 'spell', 'variable', etc.
+    name: str  # Name of spell or variable
+    conditions: List[str] = field(default_factory=list)  # List of conditions
+    args: Dict[str, Any] = field(default_factory=dict)  # Additional arguments
+    line_number: int = 0  # Line number in source file
 
 class ActionParser:
-    """Parser for converting SimC actions to PS Lua code"""
+    """Parser for converting APL actions into PS actions"""
     
     def __init__(self):
         self.indent_level = 0
         self.indent_str = "    "
+        
+    def parse(self, apl_action, context) -> Optional[Action]:
+        """Parse an APL action into a PS action"""
+        # Skip empty actions
+        if not apl_action.spell_name:
+            return None
+            
+        # Create base action
+        action = Action(
+            action_type='spell' if apl_action.spell_name != 'variable' else 'variable',
+            name=apl_action.spell_name,
+            conditions=apl_action.conditions,
+            args={},
+            line_number=apl_action.line_number
+        )
+        
+        # Add variable-specific args
+        if action.action_type == 'variable':
+            if apl_action.var_name:
+                action.args['name'] = apl_action.var_name
+            if apl_action.var_value:
+                action.args['value'] = apl_action.var_value
+            if apl_action.var_op:
+                action.args['op'] = apl_action.var_op
+                
+        # Add target if specified
+        if apl_action.target:
+            action.args['target'] = apl_action.target
+            
+        # Add pool options if specified
+        if apl_action.pool_for_next:
+            action.args['pool_for_next'] = True
+        if apl_action.pool_extra_amount is not None:
+            action.args['pool_extra_amount'] = apl_action.pool_extra_amount
+            
+        # Add action list name if specified
+        if apl_action.action_list_name:
+            action.args['action_list'] = apl_action.action_list_name
+            
+        return action
         
     def generate_lua(self, actions: List[Action]) -> str:
         """Generate PS Lua code from parsed actions"""
@@ -197,210 +70,261 @@ class ActionParser:
             "-- Generated by PS SimC Parser",
             "",
             "local PS = ...",
-            "local Spell = PS.Spell",
+            "local APL = PS.APL",
             "local Player = PS.Player",
             "local Target = Player.Target",
+            "local Spell = PS.Spell",
+            "local Item = PS.Item",
+            "local Buff = PS.Buff",
+            "local Debuff = PS.Debuff",
+            "local Talent = PS.Talent",
             "local Enemies = Player.Enemies",
-            "local Cache = {}"
+            "local Cache = {",
+            "    variables = {},",
+            "}",
             "",
-            "-- Initialize cache",
+            "-- Initialize variables",
             "function Cache:Get(key, default)",
-            "    return self[key] or default",
+            "    return self.variables[key] or default",
             "end",
             "",
             "function Cache:Set(key, value)",
-            "    self[key] = value",
+            "    self.variables[key] = value",
             "end",
             "",
-            "local Rotation = {",
-            "    Name = 'Generated Rotation',",
-            "    Profile = 'auto',",
-            "    Cache = Cache,",
-            "}",
+            "-- Action Lists",
             ""
         ])
         
-        # Generate main rotation function
-        lua_lines.extend(self._generate_rotation_function(actions))
-        
+        # Add action list functions
+        action_lists = {}
+        for action in actions:
+            list_name = action.args.get('action_list', 'default')
+            if list_name not in action_lists:
+                action_lists[list_name] = []
+            action_lists[list_name].append(action)
+            
+        # Generate code for each action list
+        for list_name, list_actions in action_lists.items():
+            # Add function header
+            if list_name == 'default':
+                lua_lines.append("function APL:Execute()")
+            else:
+                lua_lines.append(f"function APL:{list_name}()")
+                
+            # Add actions
+            self.indent_level = 1
+            for action in list_actions:
+                lua_lines.extend(self._generate_action(action))
+                
+            # Add function footer
+            self.indent_level = 0
+            lua_lines.append("end")
+            lua_lines.append("")
+            
         # Add footer
         lua_lines.extend([
-            "",
-            "return Rotation"
+            "-- Return the APL",
+            "return APL"
         ])
         
-        return "\n".join(lua_lines)
-        
-    def _generate_rotation_function(self, actions: List[Action]) -> List[str]:
-        """Generate the main rotation function"""
-        lines = [
-            "function Rotation:Execute()",
-            "    -- Check if we have a valid target",
-            "    if not Target:Exists() or Target:IsDead() then",
-            "        return",
-            "    end",
-            ""
-        ]
-        
-        # Add each action
-        for action in actions:
-            lines.extend(self._generate_action(action))
-            
-        lines.append("end")
-        return lines
+        return '\n'.join(lua_lines)
         
     def _generate_action(self, action: Action) -> List[str]:
         """Generate Lua code for a single action"""
-        lines = []
+        lua_lines = []
         
-        # Add comment if present
-        if action.comment:
-            lines.append(f"{self.indent_str}-- {action.comment}")
+        # Add conditions if present
+        if action.conditions:
+            conditions = self._convert_conditions(action.conditions)
+            lua_lines.append(f"{self.indent_str}if {conditions} then")
+            self.indent_level += 1
             
         # Handle different action types
-        if action.action_type == ActionType.SPELL:
-            lines.extend(self._generate_spell_cast(action))
-        elif action.action_type == ActionType.VARIABLE:
-            lines.extend(self._generate_variable_operation(action))
-        elif action.action_type == ActionType.POOL:
-            lines.extend(self._generate_pool_resource(action))
-        elif action.action_type == ActionType.CALL_ACTION_LIST:
-            lines.extend(self._generate_call_action_list(action))
-        elif action.action_type == ActionType.RUN_ACTION_LIST:
-            lines.extend(self._generate_run_action_list(action))
-            
-        return lines
-        
-    def _generate_variable_operation(self, action: Action) -> List[str]:
-        """Generate Lua code for variable operations"""
-        lines = []
-        
-        # Add conditions if present
-        if action.has_conditions():
-            lines.append(f"{self.indent_str}if {self._convert_conditions(action.conditions)} then")
-            self.indent_level += 1
-            
-        # Add the variable operation
-        if action.var_name and action.var_value:
-            op = action.var_op or 'set'
-            if op == 'set':
-                lines.append(f"{self.indent_str * (self.indent_level + 1)}Cache:Set('{action.var_name}', {action.var_value})")
-            elif op == 'add':
-                lines.append(f"{self.indent_str * (self.indent_level + 1)}Cache:Set('{action.var_name}', Cache:Get('{action.var_name}', 0) + {action.var_value})")
-            elif op == 'sub':
-                lines.append(f"{self.indent_str * (self.indent_level + 1)}Cache:Set('{action.var_name}', Cache:Get('{action.var_name}', 0) - {action.var_value})")
-            elif op == 'mul':
-                lines.append(f"{self.indent_str * (self.indent_level + 1)}Cache:Set('{action.var_name}', Cache:Get('{action.var_name}', 0) * {action.var_value})")
-            elif op == 'div':
-                lines.append(f"{self.indent_str * (self.indent_level + 1)}Cache:Set('{action.var_name}', Cache:Get('{action.var_name}', 0) / {action.var_value})")
-            elif op == 'max':
-                lines.append(f"{self.indent_str * (self.indent_level + 1)}Cache:Set('{action.var_name}', math.max(Cache:Get('{action.var_name}', 0), {action.var_value}))")
-            elif op == 'min':
-                lines.append(f"{self.indent_str * (self.indent_level + 1)}Cache:Set('{action.var_name}', math.min(Cache:Get('{action.var_name}', 0), {action.var_value}))")
-                
-        # Close condition if present
-        if action.has_conditions():
-            self.indent_level -= 1
-            lines.append(f"{self.indent_str}end")
-            
-        return lines
-        
-    def _generate_spell_cast(self, action: Action) -> List[str]:
-        """Generate Lua code for casting a spell"""
-        lines = []
-        
-        # Add conditions if present
-        if action.has_conditions():
-            lines.append(f"{self.indent_str}if {self._convert_conditions(action.conditions)} then")
-            self.indent_level += 1
-            
-        # Add the spell cast
-        spell_name = action.spell_name
-        if not spell_name:
-            return lines
-            
-        # Handle different spell cast types
-        target = action.args.get('target', '')
-        if target == 'ground':
-            lines.append(f"{self.indent_str * (self.indent_level + 1)}if Player:Cast(Spell.{spell_name}, 'ground') then")
+        if action.action_type == 'variable':
+            lua_lines.extend(self._generate_variable(action))
         else:
-            lines.append(f"{self.indent_str * (self.indent_level + 1)}if Player:Cast(Spell.{spell_name}) then")
+            lua_lines.extend(self._generate_spell(action))
             
-        lines.append(f"{self.indent_str * (self.indent_level + 2)}return true")
-        lines.append(f"{self.indent_str * (self.indent_level + 1)}end")
-        
-        # Close condition if present
-        if action.has_conditions():
+        # Close conditions if present
+        if action.conditions:
             self.indent_level -= 1
-            lines.append(f"{self.indent_str}end")
+            lua_lines.append(f"{self.indent_str}end")
             
-        return lines
+        return lua_lines
         
-    def _generate_pool_resource(self, action: Action) -> List[str]:
-        """Generate Lua code for resource pooling"""
-        lines = []
+    def _generate_variable(self, action: Action) -> List[str]:
+        """Generate Lua code for a variable action"""
+        lua_lines = []
         
-        if action.pool_for_next:
-            lines.append(f"{self.indent_str}if Player.Fury < {action.pool_extra_amount or 0} then")
-            lines.append(f"{self.indent_str}    return true")
-            lines.append(f"{self.indent_str}end")
+        # Get variable details
+        var_name = action.args.get('name', 'unnamed')
+        var_value = action.args.get('value', '0')
+        var_op = action.args.get('op', 'set')
+        
+        # Add variable operation
+        if var_op == 'set':
+            lua_lines.append(f"{self.indent_str}Cache:Set('{var_name}', {var_value})")
+        elif var_op == 'add':
+            lua_lines.append(f"{self.indent_str}Cache:Set('{var_name}', Cache:Get('{var_name}', 0) + {var_value})")
+        elif var_op == 'sub':
+            lua_lines.append(f"{self.indent_str}Cache:Set('{var_name}', Cache:Get('{var_name}', 0) - {var_value})")
+        elif var_op == 'mul':
+            lua_lines.append(f"{self.indent_str}Cache:Set('{var_name}', Cache:Get('{var_name}', 0) * {var_value})")
+        elif var_op == 'div':
+            lua_lines.append(f"{self.indent_str}Cache:Set('{var_name}', Cache:Get('{var_name}', 0) / {var_value})")
+        elif var_op == 'min':
+            lua_lines.append(f"{self.indent_str}Cache:Set('{var_name}', math.min(Cache:Get('{var_name}', 0), {var_value}))")
+        elif var_op == 'max':
+            lua_lines.append(f"{self.indent_str}Cache:Set('{var_name}', math.max(Cache:Get('{var_name}', 0), {var_value}))")
             
-        return lines
+        return lua_lines
         
-    def _generate_call_action_list(self, action: Action) -> List[str]:
-        """Generate Lua code for calling another action list"""
-        lines = []
+    def _generate_spell(self, action: Action) -> List[str]:
+        """Generate Lua code for a spell action"""
+        lua_lines = []
         
-        if action.has_conditions():
-            lines.append(f"{self.indent_str}if {self._convert_conditions(action.conditions)} then")
-            self.indent_level += 1
-            
-        lines.append(f"{self.indent_str * (self.indent_level + 1)}if {action.action_list_name}() then")
-        lines.append(f"{self.indent_str * (self.indent_level + 2)}return true")
-        lines.append(f"{self.indent_str * (self.indent_level + 1)}end")
+        # Add spell cast
+        spell_name = self._format_spell_name(action.name)
         
-        if action.has_conditions():
-            self.indent_level -= 1
-            lines.append(f"{self.indent_str}end")
-            
-        return lines
-        
-    def _generate_run_action_list(self, action: Action) -> List[str]:
-        """Generate Lua code for running another action list"""
-        lines = []
-        
-        if action.has_conditions():
-            lines.append(f"{self.indent_str}if {self._convert_conditions(action.conditions)} then")
-            lines.append(f"{self.indent_str}    return {action.action_list_name}()")
-            lines.append(f"{self.indent_str}end")
+        # Handle special actions
+        if spell_name == 'SnapshotStats':
+            lua_lines.append(f"{self.indent_str}-- Snapshot stats")
+        elif spell_name == 'Potion':
+            lua_lines.append(f"{self.indent_str}if Item.Potion:IsReady() then")
+            lua_lines.append(f"{self.indent_str}    Item.Potion:Use()")
+            lua_lines.append(f"{self.indent_str}end")
+        elif spell_name == 'Flask':
+            lua_lines.append(f"{self.indent_str}if Item.Flask:IsReady() then")
+            lua_lines.append(f"{self.indent_str}    Item.Flask:Use()")
+            lua_lines.append(f"{self.indent_str}end")
+        elif spell_name == 'Food':
+            lua_lines.append(f"{self.indent_str}if Item.Food:IsReady() then")
+            lua_lines.append(f"{self.indent_str}    Item.Food:Use()")
+            lua_lines.append(f"{self.indent_str}end")
+        elif spell_name == 'Augmentation':
+            lua_lines.append(f"{self.indent_str}if Item.Augmentation:IsReady() then")
+            lua_lines.append(f"{self.indent_str}    Item.Augmentation:Use()")
+            lua_lines.append(f"{self.indent_str}end")
+        elif spell_name == 'UseItem':
+            lua_lines.append(f"{self.indent_str}if Item.Trinket1:IsReady() then")
+            lua_lines.append(f"{self.indent_str}    Item.Trinket1:Use()")
+            lua_lines.append(f"{self.indent_str}end")
+        elif spell_name == 'PoolResource':
+            lua_lines.append(f"{self.indent_str}-- Pool resource")
+        elif spell_name == 'CallActionList':
+            list_name = action.args.get('action_list', 'default')
+            lua_lines.append(f"{self.indent_str}APL:{list_name}()")
+        elif spell_name == 'RunActionList':
+            list_name = action.args.get('action_list', 'default')
+            lua_lines.append(f"{self.indent_str}return APL:{list_name}()")
+        elif spell_name == 'Wait':
+            lua_lines.append(f"{self.indent_str}-- Wait")
+        elif spell_name == 'InvokeExternalBuff':
+            lua_lines.append(f"{self.indent_str}-- Invoke external buff")
+        elif spell_name == 'FelDesolation':
+            lua_lines.append(f"{self.indent_str}if Spell.FelDevastation:IsReady() then")
+            lua_lines.append(f"{self.indent_str}    Spell.FelDevastation:Cast()")
+            lua_lines.append(f"{self.indent_str}    return true")
+            lua_lines.append(f"{self.indent_str}end")
+        elif spell_name == 'SigilOfDoom':
+            lua_lines.append(f"{self.indent_str}if Spell.SigilOfFlame:IsReady() then")
+            lua_lines.append(f"{self.indent_str}    Spell.SigilOfFlame:Cast()")
+            lua_lines.append(f"{self.indent_str}    return true")
+            lua_lines.append(f"{self.indent_str}end")
         else:
-            lines.append(f"{self.indent_str}return {action.action_list_name}()")
+            # Regular spell cast
+            lua_lines.append(f"{self.indent_str}if Spell.{spell_name}:IsReady() then")
+            lua_lines.append(f"{self.indent_str}    Spell.{spell_name}:Cast()")
+            lua_lines.append(f"{self.indent_str}    return true")
+            lua_lines.append(f"{self.indent_str}end")
             
-        return lines
+        return lua_lines
+        
+    def _format_spell_name(self, name: str) -> str:
+        """Format a spell name for Lua code"""
+        # Remove underscores and capitalize first letter of each word
+        words = name.split('_')
+        return ''.join(word.title() for word in words)
         
     def _convert_conditions(self, conditions: List[str]) -> str:
         """Convert SimC conditions to Lua conditions"""
         converted = []
         for condition in conditions:
             # Convert SimC operators to Lua
-            condition = condition.strip()
+            condition = condition.replace('&&', ' and ')
+            condition = condition.replace('||', ' or ')
+            condition = condition.replace('!', 'not ')
+            condition = condition.replace('==', ' == ')
+            condition = condition.replace('>=', ' >= ')
+            condition = condition.replace('<=', ' <= ')
+            condition = condition.replace('!=', ' ~= ')
+            condition = condition.replace('>', ' > ')
+            condition = condition.replace('<', ' < ')
             
-            # Handle ! operator specially (no space after it)
-            condition = re.sub(r'!([^ ])', r'!\1', condition)  # Ensure no space after !
+            # Convert variable references
+            condition = re.sub(r'variable\.(\w+)', r"Cache:Get('\1')", condition)
             
-            # Add spaces around other operators
-            condition = re.sub(r'([<>=]+)', r' \1 ', condition)
-            condition = re.sub(r'\s+', ' ', condition)  # Normalize spaces
+            # Convert buff/debuff references
+            condition = re.sub(r'buff\.(\w+)\.(\w+)', lambda m: f'Buff.{self._format_spell_name(m.group(1))}.{m.group(2)}', condition)
+            condition = re.sub(r'debuff\.(\w+)\.(\w+)', lambda m: f'Debuff.{self._format_spell_name(m.group(1))}.{m.group(2)}', condition)
             
-            # Convert comparison operators
-            condition = condition.replace('= =', '==')  # Fix double space from above
-            condition = condition.replace('>= =', '>=')  # Fix double space from above
-            condition = condition.replace('<= =', '<=')  # Fix double space from above
+            # Convert talent references
+            condition = re.sub(r'talent\.(\w+)', lambda m: f'Talent.{self._format_spell_name(m.group(1))}', condition)
             
-            # Convert logical operators
-            condition = condition.replace('&&', 'and')
-            condition = condition.replace('||', 'or')
+            # Convert spell references
+            condition = re.sub(r'spell\.(\w+)', lambda m: f'Spell.{self._format_spell_name(m.group(1))}', condition)
+            
+            # Convert cooldown references
+            condition = re.sub(r'cooldown\.(\w+)\.(\w+)', lambda m: f'Spell.{self._format_spell_name(m.group(1))}.{m.group(2)}', condition)
+            
+            # Convert action references
+            condition = re.sub(r'action\.(\w+)\.(\w+)', lambda m: f'Spell.{self._format_spell_name(m.group(1))}.{m.group(2)}', condition)
+            
+            # Convert dot references
+            condition = re.sub(r'dot\.(\w+)\.(\w+)', lambda m: f'Debuff.{self._format_spell_name(m.group(1))}.{m.group(2)}', condition)
+            
+            # Convert active_dot references
+            condition = re.sub(r'active_dot\.(\w+)', lambda m: f'Debuff.{self._format_spell_name(m.group(1))}.Active', condition)
+            
+            # Convert charges references
+            condition = re.sub(r'charges_fractional', 'ChargesFractional', condition)
+            condition = re.sub(r'max_charges', 'MaxCharges', condition)
+            
+            # Convert prev_gcd references
+            condition = re.sub(r'prev_gcd\.(\d+)\.(\w+)', lambda m: f'Player:PrevGCD({m.group(1)}, Spell.{self._format_spell_name(m.group(2))})', condition)
+            
+            # Convert fury references
+            condition = re.sub(r'\bfury\b', 'Player.Fury', condition)
+            
+            # Convert soul_fragments references
+            condition = re.sub(r'soul_fragments\.(\w+)', r'Player.SoulFragments.\1', condition)
+            condition = re.sub(r'\bsoul_fragments\b', 'Player.SoulFragments.Count', condition)
+            
+            # Convert hero_tree references
+            condition = re.sub(r'hero_tree\.(\w+)', lambda m: f'Talent.{self._format_spell_name(m.group(1))}', condition)
+            
+            # Convert target references
+            condition = re.sub(r'target\.debuff\.(\w+)\.(\w+)', lambda m: f'Target.Debuff.{self._format_spell_name(m.group(1))}.{m.group(2)}', condition)
+            condition = re.sub(r'target\.buff\.(\w+)\.(\w+)', lambda m: f'Target.Buff.{self._format_spell_name(m.group(1))}.{m.group(2)}', condition)
+            condition = re.sub(r'target\.time_to_die', 'Target.TimeToDie', condition)
+            
+            # Convert spell_targets references
+            condition = re.sub(r'spell_targets\.(\w+)', lambda m: f'Enemies:GetCount(Spell.{self._format_spell_name(m.group(1))})', condition)
+            
+            # Convert gcd references
+            condition = re.sub(r'\bgcd\.(\w+)\b', r'Player.GCD.\1', condition)
+            condition = re.sub(r'\bgcd\b', 'Player.GCD', condition)
+            
+            # Convert fight_remains references
+            condition = re.sub(r'fight_remains', 'Target.TimeToDie', condition)
+            
+            # Convert execute_time references
+            condition = re.sub(r'execute_time', 'ExecuteTime', condition)
+            
+            # Handle parentheses
+            condition = re.sub(r'\(([^()]*)\)', lambda m: f'({m.group(1)})', condition)
             
             converted.append(condition.strip())
             
-        return " and ".join(converted)
+        return ' and '.join(converted)

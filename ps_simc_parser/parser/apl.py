@@ -4,10 +4,12 @@ APL (Action Priority List) parser for PS SimC Parser
 from typing import List, Dict, Any, Optional, Set
 from dataclasses import dataclass, field
 import re
+import click
 from .exceptions import (
     ParserError, SyntaxError, CircularReferenceError,
     DependencyError, ComplexityError, ValidationError
 )
+from .parser_context import ParserContext
 
 @dataclass
 class APLAction:
@@ -49,73 +51,65 @@ class APLAction:
                     paren_level -= 1
                 current_part.append(char)
                 
-        # Add final part
         if current_part:
             parts.append(''.join(current_part).strip())
             
-        # Parse first part as action name
-        if not parts:
-            raise SyntaxError("Empty action string")
-            
+        # Parse action and conditions
         action_part = parts[0]
-        if '=' in action_part:
-            # Handle variable assignment
-            var_parts = action_part.split('=', 1)
-            if len(var_parts) != 2:
-                raise SyntaxError(f"Invalid variable assignment: {action_part}")
-                
-            self.var_name = var_parts[0].strip()
-            self.var_value = var_parts[1].strip()
-            
-        elif action_part.startswith('/'):
-            # Handle spell cast
-            self.spell_name = action_part[1:].strip()  # Remove leading /
-            
-        else:
-            # Handle other actions
-            self.spell_name = action_part.strip()
-            
-        # Parse remaining parts
-        for part in parts[1:]:
-            if not part:
-                continue
-                
-            # Handle conditions
-            if part.startswith('if='):
-                self._parse_conditions(part[3:])  # Skip 'if='
-                
-            # Handle target specification
-            elif part.startswith('target='):
-                self.target = part[7:]  # Skip 'target='
-                
-            # Handle variable operation
-            elif part.startswith('op='):
-                self.var_op = part[3:]  # Skip 'op='
-                
-            # Handle pool resource
-            elif part == 'for_next=1':
-                self.pool_for_next = True
-            elif part.startswith('extra_amount='):
-                try:
-                    self.pool_extra_amount = int(part[13:])  # Skip 'extra_amount='
-                except ValueError:
-                    raise SyntaxError(f"Invalid pool extra amount: {part}")
-                    
-            # Handle action list
-            elif part.startswith('name='):
-                self.action_list_name = part[5:]  # Skip 'name='
-                
-    def _parse_conditions(self, condition_str: str):
-        """Parse conditions from a condition string"""
-        # Split on boolean operators while preserving them
-        parts = re.split(r'([&|])', condition_str)
+        condition_parts = parts[1:] if len(parts) > 1 else []
         
-        # Process each part
-        for part in parts:
-            part = part.strip()
-            if part and part not in ('&', '|'):
-                self.conditions.append(part)
+        # Parse action part
+        if '=' in action_part:
+            action_name, value = action_part.split('=', 1)
+            action_name = action_name.rstrip('+')  # Remove + from actions+=
+            
+            # Handle action lists
+            if action_name.startswith('actions'):
+                list_name = action_name[7:] or "default"  # actions.name or just actions
+                if list_name.startswith('.'):
+                    list_name = list_name[1:]
+                self.action_list_name = list_name
                 
+            # Handle variables
+            if value == 'variable':
+                self.spell_name = 'variable'
+                for part in condition_parts:
+                    if part.startswith('name='):
+                        self.var_name = part[5:]
+                    elif part.startswith('value='):
+                        self.var_value = part[6:]
+                    elif part.startswith('op='):
+                        self.var_op = part[3:]
+            else:
+                self.spell_name = value.lstrip('/')
+                
+        # Parse conditions
+        for part in condition_parts:
+            if part.startswith('if='):
+                self.conditions = self._parse_conditions(part[3:])
+                
+    def _parse_conditions(self, condition_str: str) -> List[str]:
+        """Parse conditions from a condition string"""
+        if not condition_str:
+            return []
+            
+        # Split on & and |, preserving them as operators
+        conditions = []
+        current = []
+        for char in condition_str:
+            if char in '&|':
+                if current:
+                    conditions.append(''.join(current).strip())
+                    current = []
+                conditions.append(char)
+            else:
+                current.append(char)
+                
+        if current:
+            conditions.append(''.join(current).strip())
+            
+        return conditions
+        
     def has_conditions(self) -> bool:
         """Check if this action has conditions"""
         return bool(self.conditions)
@@ -123,58 +117,24 @@ class APLAction:
     def __str__(self) -> str:
         """String representation of the action"""
         parts = []
-        
-        # Add action/spell name
-        if self.var_name:
+        if self.action_list_name:
+            parts.append(f"actions.{self.action_list_name}")
+        else:
+            parts.append("actions")
+            
+        if self.spell_name == 'variable':
             parts.append(f"variable,name={self.var_name}")
             if self.var_value:
                 parts.append(f"value={self.var_value}")
             if self.var_op:
                 parts.append(f"op={self.var_op}")
-        elif self.spell_name:
+        else:
             parts.append(self.spell_name)
             
-        # Add conditions
         if self.conditions:
             parts.append(f"if={'&'.join(self.conditions)}")
             
-        # Add target
-        if self.target:
-            parts.append(f"target={self.target}")
-            
-        # Add pool options
-        if self.pool_for_next:
-            parts.append("for_next=1")
-        if self.pool_extra_amount is not None:
-            parts.append(f"extra_amount={self.pool_extra_amount}")
-            
-        # Add action list name
-        if self.action_list_name:
-            parts.append(f"name={self.action_list_name}")
-            
         return ','.join(parts)
-
-@dataclass
-class ParserContext:
-    """Context for parsing SimC APL"""
-    spec: Dict[str, Any]
-    
-    def __post_init__(self):
-        """Initialize parser context"""
-        self.valid_actions = set()
-        
-        # Add spells from spec
-        if 'spells' in self.spec:
-            self.valid_actions.update(self.spec['spells'])
-            
-        # Add special actions
-        self.valid_actions.update([
-            'auto_attack',
-            'variable',
-            'pool_resource',
-            'call_action_list',
-            'run_action_list',
-        ])
 
 class APLParser:
     """Parser for SimC APL syntax"""
@@ -186,29 +146,8 @@ class APLParser:
         self.max_complexity = 50  # Maximum number of conditions in a single APL
         self.known_spells: Set[str] = set()  # Will be populated from context
         self.variable_references: Dict[str, Set[str]] = {}  # Track variable references
+        self.debug = True  # Enable debug output
         
-    def _check_circular_references(self, var_name: str, value: str):
-        """Check for circular variable references"""
-        # Track dependencies for this variable
-        self.variable_references[var_name] = set()
-        
-        # Find all variable references in the value
-        var_refs = re.findall(r'variable\.([\w_]+)', value)
-        for ref in var_refs:
-            self.variable_references[var_name].add(ref)
-            
-            # Check for circular reference
-            if ref == var_name:
-                raise CircularReferenceError(f"Variable {var_name} references itself")
-                
-            # Check for indirect circular reference
-            if ref in self.variable_references:
-                for indirect_ref in self.variable_references[ref]:
-                    if indirect_ref == var_name:
-                        raise CircularReferenceError(
-                            f"Circular reference detected: {var_name} -> {ref} -> {var_name}"
-                        )
-                        
     def parse(self, content: str, context: ParserContext) -> List[APLAction]:
         """Parse SimC APL content into intermediate representation"""
         # Reset state
@@ -217,7 +156,7 @@ class APLParser:
         self.variable_references.clear()
         
         # Get known spells from context
-        self.known_spells = context.valid_actions
+        self.known_spells = context.spec.get('spells', set())
         
         # Split content into lines and remove comments
         lines = content.strip().split('\n')
@@ -232,13 +171,18 @@ class APLParser:
             if not line or line.startswith('#'):
                 continue
                 
+            # Skip character configuration lines
+            if '=' in line and not any(line.startswith(prefix) for prefix in ['actions', 'variable']):
+                continue
+                
             # Parse action line
             try:
                 action = APLAction(line, line_number=line_number)
                 
                 # Validate spell name
-                if action.spell_name and action.spell_name not in self.known_spells:
-                    raise ValidationError(f"Unknown spell: {action.spell_name}")
+                if action.spell_name and action.spell_name != 'variable' and action.spell_name not in self.known_spells:
+                    if self.debug:
+                        click.echo(f"Warning: Unknown spell '{action.spell_name}' at line {line_number}", err=True)
                     
                 # Check for variable references
                 if action.var_name:
@@ -264,8 +208,31 @@ class APLParser:
         # Validate all dependencies are satisfied
         for dep in self.dependencies:
             if dep not in self.variables and not any(
-                dep.startswith(prefix) for prefix in ('spell', 'buff', 'debuff', 'talent')
+                dep.startswith(prefix) for prefix in ('spell', 'buff', 'debuff', 'talent', 'variable')
             ):
-                raise DependencyError(f"Unsatisfied dependency: {dep}")
+                if self.debug:
+                    click.echo(f"Warning: Unsatisfied dependency '{dep}'", err=True)
                 
         return actions
+        
+    def _check_circular_references(self, var_name: str, value: str):
+        """Check for circular variable references"""
+        # Track dependencies for this variable
+        self.variable_references[var_name] = set()
+        
+        # Find all variable references in the value
+        var_refs = re.findall(r'variable\.([\w_]+)', value)
+        for ref in var_refs:
+            self.variable_references[var_name].add(ref)
+            
+            # Check for circular reference
+            if ref == var_name:
+                raise CircularReferenceError(f"Variable {var_name} references itself")
+                
+            # Check for indirect circular reference
+            if ref in self.variable_references:
+                for indirect_ref in self.variable_references[ref]:
+                    if indirect_ref == var_name:
+                        raise CircularReferenceError(
+                            f"Circular reference detected: {var_name} -> {ref} -> {var_name}"
+                        )

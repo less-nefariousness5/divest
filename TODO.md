@@ -123,16 +123,16 @@
 - [x] Create user guide
 - [x] Add example configurations
 - [x] Document test suite
-- [ ] Review and update all documentation for:
-  - [ ] Recent operator formatting changes
-  - [ ] Test suite improvements
-  - [ ] Git history search patterns
-- [ ] Create contribution guidelines
-- [ ] Add performance optimization guide
-- [ ] Document known limitations
+- [x] Review and update all documentation for:
+  - [x] Recent operator formatting changes
+  - [x] Test suite improvements
+  - [x] Git history search patterns
+- [x] Create contribution guidelines
+- [x] Add performance optimization guide
+- [x] Document known limitations
 
 ## Phase 7: Maintenance & Optimization 
-- [ ] Implement remaining test categories:
+- [x] Implement remaining test categories:
   - [x] Basic Single Target Test
   - [x] Complex Conditions Test
   - [x] Cooldowns Management Test
@@ -165,6 +165,13 @@
   - [ ] Lua optimizer
   - [ ] Debug tools
   - [ ] Profiling tools
+
+## Integration Testing
+- [ ] Full pipeline integration tests
+  - [ ] Test SimC to Lua conversion
+  - [ ] Test command-line interface
+  - [ ] Test component interactions
+  - [ ] Add regression tests for bugs
 
 ## Completed Tasks
 - [x] Fixed VDH parser errors
@@ -208,3 +215,56 @@
 - [x] Implement Movement Test
 - [x] Implement Resource Management Test
 - [x] Implement Full Rotation Tests
+
+## TODO List
+
+### High Priority
+
+- [x] Fix parsing of APL actions
+- [x] Fix parsing of APL conditions
+- [x] Fix Lua code generation
+- [x] Handle unknown spells gracefully
+- [x] Add proper error handling
+- [x] Add line number reporting
+- [x] Fix variable handling
+- [x] Fix spell name formatting
+- [x] Fix condition formatting
+- [x] Add support for special actions (wait, invoke_external_buff, etc.)
+- [x] Add support for special variables (fight_remains, target.time_to_die, etc.)
+- [ ] Add support for more complex expressions
+- [ ] Add support for more spell and buff references
+- [ ] Add support for more variable operations
+- [ ] Add support for more target references
+
+### Medium Priority
+
+- [ ] Add tests for all supported actions
+- [ ] Add tests for all supported conditions
+- [ ] Add tests for all supported variables
+- [ ] Add tests for all supported spells
+- [ ] Add tests for all supported buffs
+- [ ] Add tests for all supported talents
+- [ ] Add tests for all supported target references
+
+### Low Priority
+
+- [ ] Add documentation for all supported actions
+- [ ] Add documentation for all supported conditions
+- [ ] Add documentation for all supported variables
+- [ ] Add documentation for all supported spells
+- [ ] Add documentation for all supported buffs
+- [ ] Add documentation for all supported talents
+- [ ] Add documentation for all supported target references
+
+### Completed
+
+- [x] Basic APL parsing
+- [x] Basic condition parsing
+- [x] Basic Lua code generation
+- [x] Basic error handling
+- [x] Basic line number reporting
+- [x] Basic variable handling
+- [x] Basic spell name formatting
+- [x] Basic condition formatting
+- [x] Support for special actions
+- [x] Support for special variables

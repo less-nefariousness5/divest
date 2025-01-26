@@ -1,0 +1,4 @@
+# Test APL
+actions=auto_attack
+actions+=/infernal_strike,if=!dot.sigil_of_flame.ticking
+actions+=/variable,name=brand_build,value=talent.agonizing_flames.enabled&talent.burning_alive.enabled
