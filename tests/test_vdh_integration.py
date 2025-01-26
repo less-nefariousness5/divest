@@ -13,6 +13,8 @@ class TestVDHIntegration(PSTestCase):
         self.simc_file = Path(os.path.dirname(os.path.dirname(os.path.dirname(__file__)))) / 'vdh.simc'
         with open(self.simc_file, 'r') as f:
             self.simc_content = f.read()
+        # Set the specialization for VDH
+        self.parser.spec = 'vengeance'
 
     def test_base_rotation_parsing(self):
         """Test parsing of the base VDH rotation"""

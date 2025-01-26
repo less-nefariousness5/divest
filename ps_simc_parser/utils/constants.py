@@ -10,7 +10,7 @@ SUPPORTED_SPECS = {
         'role': 'tank',
         'resource': 'fury',
         'power_type': 'fury',
-        'valid_actions': {
+        'spells': {
             'immolation_aura',
             'fel_devastation',
             'sigil_of_flame',
@@ -24,6 +24,24 @@ SUPPORTED_SPECS = {
             'fiery_brand',
             'bulk_extraction',
             'felblade',
+            'infernal_strike',
+            'auto_attack',
+        },
+        'buffs': {
+            'metamorphosis',
+            'demon_spikes',
+            'fiery_brand',
+            'soul_fragments',
+            'sigil_of_flame',
+        },
+        'talents': {
+            'agonizing_flames',
+            'burning_alive',
+            'charred_flesh',
+            'fallout',
+            'feed_the_demon',
+            'fracture',
+            'spirit_bomb',
         }
     },
     # Add more specs as needed

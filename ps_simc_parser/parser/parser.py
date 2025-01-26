@@ -3,20 +3,25 @@ Parser for SimC APL files
 """
 from typing import Dict, List, Optional, Any
 from dataclasses import dataclass
-from .actions import Action, ActionList
+from .apl import APLParser, Action
 
 @dataclass
 class ParserContext:
     """Context for parsing SimC APL"""
-    class_name: str
-    spec_name: str
-    role: str
-    level: int = 70
-    talents: Dict[str, bool] = None
+    variables: Dict[str, Any] = None
+    action_lists: Dict[str, List[Action]] = None
+    current_list: str = 'default'
+    in_precombat: bool = False
+    list_stack: List[str] = None
+    max_recursion_depth: int = 10
     
     def __post_init__(self):
-        if self.talents is None:
-            self.talents = {}
+        if self.variables is None:
+            self.variables = {}
+        if self.action_lists is None:
+            self.action_lists = {}
+        if self.list_stack is None:
+            self.list_stack = []
 
 class ParseError(Exception):
     """Custom exception for parsing errors"""
@@ -26,68 +31,30 @@ class Parser:
     """Parser for SimC APL files"""
     
     def __init__(self, context: Optional[ParserContext] = None):
-        self.context = context or ParserContext(
-            class_name='demonhunter',
-            spec_name='vengeance',
-            role='tank'
-        )
-        self.action_lists: Dict[str, ActionList] = {}
+        self.context = context or ParserContext()
+        self.apl_parser = APLParser()
         
-    def parse(self, content: str) -> Dict[str, ActionList]:
+    def parse(self, content: str) -> ParserContext:
         """Parse SimC APL content into action lists"""
         try:
-            lines = content.strip().split('\n')
-            current_list = None
+            # Parse actions using APLParser
+            actions = self.apl_parser.parse(content)
             
-            for line in lines:
-                line = line.strip()
-                if not line or line.startswith('#'):
-                    continue
-                    
-                if line.startswith('actions'):
-                    action_list_name, action = self._parse_action_line(line)
-                    
-                    if action_list_name not in self.action_lists:
-                        self.action_lists[action_list_name] = ActionList(action_list_name)
-                        
-                    if action:
-                        self.action_lists[action_list_name].add_action(action)
-                        
-            return self.action_lists
+            # Add actions to default list
+            if 'default' not in self.context.action_lists:
+                self.context.action_lists['default'] = []
+            self.context.action_lists['default'].extend(actions)
+            
+            return self.context
             
         except Exception as e:
+            # Re-raise any parsing errors
             raise ParseError(f"Failed to parse APL: {str(e)}")
             
-    def _parse_action_line(self, line: str) -> tuple[str, Optional[Action]]:
-        """Parse a single action line"""
-        # Remove comments
-        if '#' in line:
-            line = line[:line.index('#')]
-            
-        # Split into parts
-        parts = line.split('=', 1)
-        if len(parts) != 2:
-            return 'default', None
-            
-        action_path, action_str = parts
+    def _validate_dependencies(self, actions: List[Action]):
+        """Validate action dependencies"""
+        self.apl_parser._validate_dependencies(actions)
         
-        # Get action list name
-        path_parts = action_path.split('.')
-        if len(path_parts) > 2:
-            list_name = path_parts[1]
-        else:
-            list_name = 'default'
-            
-        # Parse action
-        if not action_str:
-            return list_name, None
-            
-        try:
-            action = Action(action_str)
-            return list_name, action
-        except Exception as e:
-            raise ParseError(f"Failed to parse action '{action_str}': {str(e)}")
-            
     def _parse_conditions(self, condition_str: str) -> List[str]:
         """Parse conditions from a condition string"""
         if not condition_str:

@@ -9,7 +9,7 @@ from datetime import datetime
 import re
 from .validator import is_valid_condition
 from .resources import RESOURCE_MAPPINGS
-from .spells import SpellMapping, SPELL_MAPPINGS, convert_spell
+from .spells import SpellMapping, SPELL_MAPPINGS, convert_spell as spells_convert_spell
 
 # Define core mappings
 @dataclass
@@ -17,7 +17,7 @@ class SpellMapping:
     """Mapping for a spell from SimC to PS API"""
     simc_name: str
     ps_name: str
-    description: str = ""
+    spell_id: int
 
 @dataclass
 class ResourceMapping:
@@ -49,30 +49,28 @@ SPELL_MAPPINGS: Dict[str, SpellMapping] = {
     'spirit_bomb': SpellMapping(
         simc_name='spirit_bomb',
         ps_name='SpiritBomb',
-        description='Consumes up to 5 Soul Fragments to inflict Fire damage'
+        spell_id=1
     ),
     'immolation_aura': SpellMapping(
         simc_name='immolation_aura',
         ps_name='ImmolationAura',
-        description='Engulf yourself in flames'
+        spell_id=2
     ),
     'sigil_of_flame': SpellMapping(
         simc_name='sigil_of_flame',
         ps_name='SigilOfFlame',
-        description='Place a Sigil of Flame at the target location'
+        spell_id=3
     ),
     'metamorphosis': SpellMapping(
         simc_name='metamorphosis',
         ps_name='Metamorphosis',
-        description='Transform into demon form'
+        spell_id=4
     ),
 }
 
 def convert_spell(spell_name: str) -> Optional[SpellMapping]:
     """Convert a SimC spell name to PS API spell name"""
-    if spell_name not in SPELL_MAPPINGS:
-        raise ValueError(f"Unknown spell: {spell_name}")
-    return SPELL_MAPPINGS[spell_name]
+    return spells_convert_spell(spell_name)
 
 # Conversion functions
 def convert_condition(condition: str) -> str:

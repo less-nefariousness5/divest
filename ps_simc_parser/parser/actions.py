@@ -38,18 +38,12 @@ class Action:
         # Split action string into parts
         parts = action_str.split(',')
         
-        # Parse first part as name or spell_name
+        # Parse first part as name
         first_part = parts[0].strip()
-        if '=' in first_part:
-            key, value = first_part.split('=', 1)
-            if key == 'spell_name':
-                self.name = value
-            else:
-                self.name = key
-                self.args[key] = value
-        else:
-            self.name = first_part
-            
+        if first_part.startswith('/'):
+            first_part = first_part[1:]  # Remove leading /
+        self.name = first_part
+        
         # Parse remaining parts
         for part in parts[1:]:
             if not part:
@@ -62,8 +56,8 @@ class Action:
                 
                 if key == 'if':
                     # Split conditions on & and |
-                    self.conditions = re.split(r'[&|]', value)
-                    self.conditions = [c.strip() for c in self.conditions if c.strip()]
+                    conditions = value.split('&')
+                    self.conditions = [c.strip() for c in conditions if c.strip()]
                 elif key == 'target_if':
                     self.target_condition = value
                 elif key == 'cycle_targets':
@@ -82,13 +76,13 @@ class Action:
     @property
     def action_type(self) -> ActionType:
         """Get the type of this action"""
-        if self.name == 'variable':
+        if self.name.startswith('variable'):
             return ActionType.VARIABLE
-        elif self.name == 'pool_resource':
+        elif self.name.startswith('pool_resource'):
             return ActionType.POOL
-        elif self.name == 'call_action_list':
+        elif self.name.startswith('call_action_list'):
             return ActionType.CALL_ACTION_LIST
-        elif self.name == 'run_action_list':
+        elif self.name.startswith('run_action_list'):
             return ActionType.RUN_ACTION_LIST
         else:
             return ActionType.SPELL
@@ -118,7 +112,7 @@ class Action:
     def var_op(self) -> Optional[str]:
         """Get the variable operation for this action"""
         if self.action_type == ActionType.VARIABLE:
-            return self.args.get('op', 'set')
+            return self.args.get('op')
         return None
         
     @property
@@ -277,6 +271,40 @@ class ActionParser:
             
         return lines
         
+    def _generate_variable_operation(self, action: Action) -> List[str]:
+        """Generate Lua code for variable operations"""
+        lines = []
+        
+        # Add conditions if present
+        if action.has_conditions():
+            lines.append(f"{self.indent_str}if {self._convert_conditions(action.conditions)} then")
+            self.indent_level += 1
+            
+        # Add the variable operation
+        if action.var_name and action.var_value:
+            op = action.var_op or 'set'
+            if op == 'set':
+                lines.append(f"{self.indent_str * (self.indent_level + 1)}Cache:Set('{action.var_name}', {action.var_value})")
+            elif op == 'add':
+                lines.append(f"{self.indent_str * (self.indent_level + 1)}Cache:Set('{action.var_name}', Cache:Get('{action.var_name}', 0) + {action.var_value})")
+            elif op == 'sub':
+                lines.append(f"{self.indent_str * (self.indent_level + 1)}Cache:Set('{action.var_name}', Cache:Get('{action.var_name}', 0) - {action.var_value})")
+            elif op == 'mul':
+                lines.append(f"{self.indent_str * (self.indent_level + 1)}Cache:Set('{action.var_name}', Cache:Get('{action.var_name}', 0) * {action.var_value})")
+            elif op == 'div':
+                lines.append(f"{self.indent_str * (self.indent_level + 1)}Cache:Set('{action.var_name}', Cache:Get('{action.var_name}', 0) / {action.var_value})")
+            elif op == 'max':
+                lines.append(f"{self.indent_str * (self.indent_level + 1)}Cache:Set('{action.var_name}', math.max(Cache:Get('{action.var_name}', 0), {action.var_value}))")
+            elif op == 'min':
+                lines.append(f"{self.indent_str * (self.indent_level + 1)}Cache:Set('{action.var_name}', math.min(Cache:Get('{action.var_name}', 0), {action.var_value}))")
+                
+        # Close condition if present
+        if action.has_conditions():
+            self.indent_level -= 1
+            lines.append(f"{self.indent_str}end")
+            
+        return lines
+        
     def _generate_spell_cast(self, action: Action) -> List[str]:
         """Generate Lua code for casting a spell"""
         lines = []
@@ -287,11 +315,16 @@ class ActionParser:
             self.indent_level += 1
             
         # Add the spell cast
+        spell_name = action.spell_name
+        if not spell_name:
+            return lines
+            
+        # Handle different spell cast types
         target = action.args.get('target', '')
         if target == 'ground':
-            lines.append(f"{self.indent_str * (self.indent_level + 1)}if Player:Cast(Spells.{action.spell_name}, 'ground') then")
+            lines.append(f"{self.indent_str * (self.indent_level + 1)}if Player:Cast(Spell.{spell_name}, 'ground') then")
         else:
-            lines.append(f"{self.indent_str * (self.indent_level + 1)}if Player:Cast(Spells.{action.spell_name}) then")
+            lines.append(f"{self.indent_str * (self.indent_level + 1)}if Player:Cast(Spell.{spell_name}) then")
             
         lines.append(f"{self.indent_str * (self.indent_level + 2)}return true")
         lines.append(f"{self.indent_str * (self.indent_level + 1)}end")
@@ -300,18 +333,6 @@ class ActionParser:
         if action.has_conditions():
             self.indent_level -= 1
             lines.append(f"{self.indent_str}end")
-            
-        return lines
-        
-    def _generate_variable_operation(self, action: Action) -> List[str]:
-        """Generate Lua code for variable operations"""
-        lines = []
-        value = action.var_value if action.var_value else "nil"
-        
-        if action.var_op == "reset":
-            lines.append(f"{self.indent_str}Cache:Set('{action.var_name}', nil)")
-        else:
-            lines.append(f"{self.indent_str}Cache:Set('{action.var_name}', {value})")
             
         return lines
         

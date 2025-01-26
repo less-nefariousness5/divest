@@ -1,11 +1,13 @@
 """
 Core parser module for PS SimC Parser
 """
-from typing import Dict, List, Optional
+from typing import Dict, Any, List, Optional
 from dataclasses import dataclass
-from .apl import APLParser
-from .actions import ActionParser
 import re
+import click
+from .apl import APLParser, APLAction, ParserContext
+from .actions import ActionParser, Action
+from ..utils.constants import SUPPORTED_SPECS
 
 class ParseError(Exception):
     """Exception raised for parsing errors"""
@@ -19,59 +21,72 @@ class ParserContext:
     current_list: str
     in_precombat: bool
     list_stack: List[str]  # Track nested action list calls
+    spec: Dict[str, Any]
     max_recursion_depth: int = 10
 
 class Parser:
-    """Main parser class for converting SimC APL to PS Lua"""
+    """Parser class for PS SimC Parser."""
     
     def __init__(self):
+        """Initialize parser."""
+        self.specs = SUPPORTED_SPECS
+        self._spec = None
         self.apl_parser = APLParser()
         self.action_parser = ActionParser()
+        
+    def parse(self, content: str) -> ParserContext:
+        """Parse SimC APL content and return a ParserContext.
+        This is the main entry point for parsing."""
+        if self.spec is None:
+            raise ValueError("Specialization must be set before parsing")
+            
         self.context = ParserContext(
             variables={},
             action_lists={},
             current_list="default",
             in_precombat=False,
-            list_stack=[]
-        )
-
-    def parse_file(self, input_file: str) -> ParserContext:
-        """Parse a SimC file into a ParserContext with organized action lists"""
-        with open(input_file, 'r') as f:
-            simc_content = f.read()
-        return self.parse(simc_content)
-
-    def parse(self, input_str: str) -> ParserContext:
-        """Parse a SimC string into a ParserContext with organized action lists"""
-        # Reset context
-        self.context = ParserContext(
-            variables={},
-            action_lists={},
-            current_list="default",
-            in_precombat=False,
-            list_stack=[]
+            list_stack=[],
+            spec=self.specs[self.spec]
         )
         
-        # Handle string input
-        if isinstance(input_str, str):
-            for line_num, line in enumerate(input_str.splitlines(), 1):
-                try:
-                    parsed = self.parse_line(line.strip())
-                    if parsed:
-                        current_list = self.context.current_list
-                        if current_list not in self.context.action_lists:
-                            self.context.action_lists[current_list] = []
-                        self.context.action_lists[current_list].append(parsed)
-                except ParseError as e:
-                    raise ParseError(f"Error on line {line_num}: {str(e)}")
-        # Handle list input
-        elif isinstance(input_str, list):
-            self.context.action_lists["default"] = input_str
-        else:
-            raise ParseError(f"Invalid input type: {type(input_str)}")
-        
+        # Parse the content
+        for line_num, line in enumerate(content.splitlines(), 1):
+            try:
+                parsed = self.parse_line(line.strip())
+                if parsed:
+                    current_list = self.context.current_list
+                    if current_list not in self.context.action_lists:
+                        self.context.action_lists[current_list] = []
+                    self.context.action_lists[current_list].append(parsed)
+            except ParseError as e:
+                raise ParseError(f"Error on line {line_num}: {str(e)}")
+                
         return self.context
 
+    def parse_file_content(self, content: str) -> ParserContext:
+        """Parse SimC APL content."""
+        return self.parse(content)
+        
+    @property
+    def spec(self):
+        return self._spec
+        
+    @spec.setter
+    def spec(self, value):
+        if value is not None and value not in self.specs:
+            raise ValueError(f"Unsupported specialization: {value}")
+        self._spec = value
+        
+    def parse_file(self, input_file: str) -> List[Action]:
+        """Parse a SimC APL file."""
+        if self.spec is None:
+            raise ValueError("Specialization must be set before parsing")
+            
+        with open(input_file, 'r') as f:
+            content = f.read()
+            
+        return self.parse_file_content(content)
+        
     def parse_line(self, line: str) -> Optional[Dict]:
         """Parse a single line of SimC input into a dictionary
         
@@ -127,8 +142,9 @@ class Parser:
             
         # Handle regular actions
         action_dict = {
-            'type': 'spell',  # Changed from 'action' to 'spell'
+            'type': 'spell',  
             'name': value.lstrip('/'),  # Remove leading / from spell name
+            'action': value.lstrip('/'),  # Add action field for Lua generator
             'conditions': [],
             'args': {}
         }
@@ -141,28 +157,6 @@ class Parser:
                 
         return action_dict
 
-    def _parse_action_list_call(self, params: List[str]) -> Dict:
-        """Parse a call_action_list action"""
-        result = {'type': 'call_action_list'}
-        conditions = []
-        
-        for param in params:
-            if param.startswith('name='):
-                result['list_name'] = param.split('=', 1)[1]
-            elif param.startswith('if='):
-                conditions.extend(self._parse_conditions(param[3:]))
-                
-        if 'list_name' not in result:
-            raise ParseError("call_action_list missing required name parameter")
-            
-        # Check recursion depth
-        if result['list_name'] in self.context.list_stack:
-            if len(self.context.list_stack) >= self.context.max_recursion_depth:
-                raise ParseError(f"Maximum action list recursion depth exceeded: {result['list_name']}")
-                
-        result['conditions'] = conditions
-        return result
-        
     def _parse_variable(self, params: List[str]) -> Dict:
         """Parse variable definition parameters"""
         result = {'type': 'variable'}
@@ -205,26 +199,6 @@ class Parser:
             raise ParseError("Variable definition must have value or operation")
             
         return result
-
-    def get_variable_value(self, var_name: str) -> Optional[str]:
-        """Get variable value respecting scope"""
-        # Check current list scope first
-        if (self.context.current_list in self.context.variables and 
-            var_name in self.context.variables[self.context.current_list]):
-            return self.context.variables[self.context.current_list][var_name]
-            
-        # Check parent scopes in reverse order
-        for list_name in reversed(self.context.list_stack):
-            if (list_name in self.context.variables and 
-                var_name in self.context.variables[list_name]):
-                return self.context.variables[list_name][var_name]
-                
-        # Check global scope
-        if ('default' in self.context.variables and 
-            var_name in self.context.variables['default']):
-            return self.context.variables['default'][var_name]
-            
-        return None
 
     def _parse_conditions(self, condition_str: str) -> List[Dict]:
         """Parse condition string into structured condition objects
@@ -367,8 +341,15 @@ class Parser:
             'value': cond
         }
 
-    def generate_lua(self, actions: List[Dict], output_file: str) -> None:
-        """Generate PS Lua code from parsed actions and write to file"""
-        lua_code = self.action_parser.generate_lua(actions)
-        with open(output_file, 'w') as f:
-            f.write(lua_code)
+    def generate_lua(self, actions: List[Action]) -> str:
+        """Generate Lua code from parsed actions."""
+        return self.action_parser.generate_lua(actions)
+
+__all__ = [
+    'Parser',
+    'APLParser',
+    'APLAction',
+    'ParserContext',
+    'ActionParser',
+    'Action',
+]

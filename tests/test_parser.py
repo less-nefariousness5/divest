@@ -88,3 +88,52 @@ class TestParser(PSTestCase):
         """Test parsing comment"""
         result = self.parser.parse_line("# This is a comment")
         self.assertIsNone(result)
+
+
+"""
+Tests for the main Parser class that handles the full parsing pipeline.
+"""
+import unittest
+from .base import PSTestCase
+from ps_simc_parser.parser import Parser, Action
+from ps_simc_parser.parser.exceptions import ParserError
+
+class TestParser(unittest.TestCase):
+    """Test the main Parser class"""
+    
+    def setUp(self):
+        """Set up test case"""
+        self.parser = Parser()
+        self.parser.spec = "vengeance"
+        
+    def test_parse_file_content(self):
+        """Test parsing SimC APL content"""
+        simc_content = """
+        # Test APL
+        actions=auto_attack
+        actions+=/infernal_strike,if=!dot.sigil_of_flame.ticking
+        actions+=/variable,name=brand_build,value=talent.agonizing_flames.enabled&talent.burning_alive.enabled
+        """
+        
+        # Parse APL content
+        actions = self.parser.parse_file_content(simc_content)
+        
+        # Verify actions were parsed correctly
+        self.assertIsNotNone(actions)
+        self.assertGreater(len(actions), 0)
+        
+        # Check first action
+        self.assertEqual(actions[0].name, "auto_attack")
+        
+        # Check second action
+        self.assertEqual(actions[1].name, "infernal_strike")
+        self.assertEqual(len(actions[1].conditions), 1)
+        self.assertEqual(actions[1].conditions[0], "!dot.sigil_of_flame.ticking")
+        
+        # Check third action
+        self.assertEqual(actions[2].name, "variable")
+        self.assertEqual(actions[2].args["name"], "brand_build")
+        self.assertEqual(actions[2].args["value"], "talent.agonizing_flames.enabled&talent.burning_alive.enabled")
+        
+if __name__ == '__main__':
+    unittest.main()

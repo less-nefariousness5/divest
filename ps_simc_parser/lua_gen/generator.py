@@ -127,9 +127,36 @@ class LuaGenerator:
                 if not spell_name:
                     raise GeneratorError("Missing spell name")
                     
+                # Skip non-combat actions in precombat
+                non_combat_actions = [
+                    'flask', 'augmentation', 'food', 'snapshot_stats',
+                    'arcane_torrent', 'variable', 'auto_attack', 'disrupt',
+                    'infernal_strike'
+                ]
+                if spell_name in non_combat_actions:
+                    # Handle variable actions
+                    if spell_name == 'variable':
+                        name = action.get('args', {}).get('name')
+                        value = action.get('args', {}).get('value')
+                        if name and value:
+                            lua_code.append(f"    Variables:Set('{name}', {value})")
+                    continue
+                    
+                # Handle invoke_external_buff actions
+                if spell_name == 'invoke_external_buff':
+                    buff_name = action.get('args', {}).get('name')
+                    if buff_name:
+                        lua_code.append(f"    if Player:BuffUp(Spell.{buff_name}) then")
+                        lua_code.append("        return true")
+                        lua_code.append("    end")
+                    continue
+                    
                 try:
                     spell = convert_spell(spell_name)
                 except ValueError as e:
+                    # Skip unknown spells that are non-combat actions
+                    if spell_name in non_combat_actions:
+                        continue
                     raise GeneratorError(f"Unknown spell: {spell_name}")
                 
                 conditions = action.get('conditions', [])
