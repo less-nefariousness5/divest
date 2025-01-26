@@ -1,0 +1,13 @@
+# Boss mechanic handling
+variable,name=mechanic_active,value=mechanic.movement_required|mechanic.dodge_required|mechanic.immunity_required
+variable,name=safe_to_attack,value=!mechanic.frontal_active&!mechanic.void_zone_active
+
+# Mechanic responses
+actions=metamorphosis,if=mechanic.immunity_required
+actions+=/infernal_strike,if=mechanic.movement_required&target.distance>10
+actions+=/demon_spikes,if=mechanic.physical_damage_incoming
+actions+=/empower_wards,if=mechanic.magic_damage_incoming
+
+# Normal rotation when safe
+actions+=/immolation_aura,if=variable.safe_to_attack
+actions+=/spirit_bomb,if=variable.safe_to_attack&soul_fragments>=4 

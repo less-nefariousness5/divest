@@ -1,0 +1,2 @@
+[console_scripts]
+ps-simc-parser = ps_simc_parser.__main__:cli

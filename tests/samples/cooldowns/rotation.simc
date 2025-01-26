@@ -1,0 +1,13 @@
+# Cooldown management and trinket usage
+variable,name=cooldown_condition,value=target.time_to_die>30&!variable.mechanic_active
+variable,name=burst_condition,value=buff.metamorphosis.up|target.time_to_die<=25
+
+# Cooldown usage
+actions=metamorphosis,if=variable.cooldown_condition
+actions+=/fiery_brand,if=variable.cooldown_condition&!buff.fiery_brand.up
+actions+=/use_item,name=trinket1,if=variable.burst_condition
+actions+=/use_item,name=trinket2,if=variable.burst_condition
+
+# Regular abilities
+actions+=/fel_devastation,if=buff.metamorphosis.up
+actions+=/spirit_bomb,if=buff.metamorphosis.up&soul_fragments>=4 

@@ -1,0 +1,14 @@
+# Resource management focused rotation
+variable,name=max_fragments,value=5
+variable,name=need_fury,value=fury.deficit>=40
+variable,name=need_fragments,value=soul_fragments<variable.max_fragments-1
+variable,name=overcap_fury,value=fury.deficit<=20&!buff.metamorphosis.up
+
+# Fury generation
+actions=felblade,if=variable.need_fury
+actions+=/immolation_aura,if=variable.need_fury
+actions+=/fracture,if=variable.need_fragments&!variable.overcap_fury
+
+# Fury spending
+actions+=/spirit_bomb,if=soul_fragments>=4
+actions+=/soul_cleave,if=variable.overcap_fury 

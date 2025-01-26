@@ -1,0 +1,11 @@
+# AOE rotation with enemy count handling
+actions=spirit_bomb,if=soul_fragments>=4&active_enemies>=3
+actions+=/immolation_aura,if=active_enemies>1
+actions+=/sigil_of_flame,if=active_enemies>=2
+actions+=/fel_devastation,if=active_enemies>=3
+actions+=/soul_cleave,if=fury>=60&active_enemies<=2
+actions+=/fracture
+
+# Variables for AOE
+variable,name=large_pull,value=active_enemies>=5
+variable,name=use_defensives,value=variable.large_pull|incoming_damage_5s>100000 

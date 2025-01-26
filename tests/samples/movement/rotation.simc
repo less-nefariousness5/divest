@@ -1,0 +1,13 @@
+# Movement and positioning handling
+variable,name=needs_reposition,value=target.distance>8|mechanic.avoid_zone
+variable,name=can_charge,value=target.distance>10&target.distance<30
+variable,name=safe_position,value=!mechanic.in_void_zone&!mechanic.in_frontal
+
+# Movement abilities
+actions=infernal_strike,if=variable.needs_reposition&position.safe_location_available
+actions+=/felblade,if=variable.can_charge
+actions+=/throw_glaive,if=target.distance>8&!variable.can_charge
+
+# Position-based actions
+actions+=/sigil_of_flame,if=variable.safe_position
+actions+=/fel_devastation,if=target.distance<=8&variable.safe_position 

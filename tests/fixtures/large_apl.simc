@@ -1,0 +1,19 @@
+# Large APL test fixture
+actions=immolation_aura
+actions+=/fel_devastation,if=fury>50
+actions+=/spirit_bomb,if=soul_fragments>=4
+actions+=/soul_cleave,if=fury>=60&!buff.metamorphosis.up
+actions+=/fracture,if=fury<=80&soul_fragments<=3
+actions+=/sigil_of_flame,if=target.time_to_die>8
+actions+=/throw_glaive,if=buff.demon_spikes.up
+actions+=/shear
+
+# Variables
+variable,name=defensives_required,value=health.pct<65
+variable,name=use_mitigation,value=incoming_damage_5s>50000
+variable,name=pool_fury,value=fury>80&!buff.metamorphosis.up
+
+# Action Lists
+actions.defensives=demon_spikes,if=variable.use_mitigation
+actions.defensives+=/metamorphosis,if=variable.defensives_required
+actions.defensives+=/fiery_brand,target=target 

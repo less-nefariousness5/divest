@@ -1,0 +1,7 @@
+# Basic single target rotation for Vengeance DH
+actions=immolation_aura
+actions+=/fel_devastation,if=fury>50
+actions+=/spirit_bomb,if=soul_fragments>=4
+actions+=/soul_cleave,if=fury>=60
+actions+=/fracture,if=fury<=80&soul_fragments<=3
+actions+=/sigil_of_flame 

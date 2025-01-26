@@ -1,0 +1,38 @@
+{
+    "actions": [
+        {
+            "type": "spell",
+            "name": "immolation_aura",
+            "conditions": []
+        },
+        {
+            "type": "spell",
+            "name": "fel_devastation",
+            "conditions": ["fury>50"]
+        },
+        {
+            "type": "variable",
+            "name": "pool_fury",
+            "value": "fury>80"
+        },
+        {
+            "type": "call_action_list",
+            "name": "defensives",
+            "conditions": ["health.pct<65"]
+        }
+    ],
+    "action_lists": {
+        "defensives": [
+            {
+                "type": "spell",
+                "name": "demon_spikes",
+                "conditions": ["incoming_damage_5s>50000"]
+            },
+            {
+                "type": "spell",
+                "name": "metamorphosis",
+                "conditions": ["health.pct<40"]
+            }
+        ]
+    }
+} 

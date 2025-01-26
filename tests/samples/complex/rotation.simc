@@ -1,0 +1,13 @@
+# Complex rotation with advanced conditions
+# Defensive handling
+variable,name=defensive_condition,value=health.pct<65|incoming_damage_5s>100000|buff.demon_spikes.down&active_enemies>=3
+variable,name=emergency_condition,value=health.pct<40&!buff.metamorphosis.up
+variable,name=pool_fury,value=fury>80&!buff.metamorphosis.up&cooldown.fel_devastation.remains<=2
+
+# Resource pooling
+actions=metamorphosis,if=variable.emergency_condition
+actions+=/demon_spikes,if=variable.defensive_condition&!buff.demon_spikes.up
+actions+=/fiery_brand,if=variable.defensive_condition&!buff.fiery_brand.up
+actions+=/spirit_bomb,if=soul_fragments>=4&(buff.metamorphosis.up|!variable.pool_fury)
+actions+=/fel_devastation,if=!variable.pool_fury|buff.metamorphosis.up
+actions+=/soul_cleave,if=fury>=80&!variable.pool_fury 
