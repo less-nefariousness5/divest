@@ -73,7 +73,7 @@
   - [x] Add condition conversion
   - [x] Add file output handling
 
-## Phase 5: Testing & Validation 🔄
+## Phase 5: Testing & Validation 
 - [x] Create test suite
   - [x] Unit tests for parser
   - [x] Integration tests for Lua generation
@@ -82,13 +82,27 @@
   - [x] Performance tests
   - [x] Error handling tests
   - [x] Edge case tests
+    - [x] Syntax error handling
+    - [x] Circular reference detection
+    - [x] Missing dependency handling
+    - [x] Invalid operator handling
+    - [x] Malformed action handling
+    - [x] Nested parentheses handling
+    - [x] Special character handling
+    - [x] Whitespace handling
+    - [x] Error recovery
+    - [x] Empty input handling
+    - [x] Max complexity handling
   - [x] Memory usage tests
   - [x] Concurrency tests
   - [x] Cache performance tests
 
 - [x] Create sample rotations
   - [x] Basic single target rotation
-  - [x] AOE rotation example
+  - [x] AOE rotation example 
+    - [x] Fixed spell name lookup in generator
+    - [x] Fixed operator formatting in conditions
+    - [x] Updated test assertions for Lua style
   - [x] Complex condition example
   - [x] Resource management example
   - [x] Mechanic handling example
@@ -99,119 +113,43 @@
   - [x] VDH (Vengeance Demon Hunter) APL Testing
     - [x] Initial test suite setup
     - [x] Fixed SimC file parsing issues
-    - [x] Base Rotation Validation
-      - [x] Defensive cooldown usage logic
-      - [x] Resource generation cycle
-      - [x] Core damage rotation
-      - [x] AoE priority system
-      - [x] Demon Spikes management
-      - [x] Fiery Brand usage
-      - [x] Spirit Bomb vs Soul Cleave logic
-    - [x] Talent Build Variations
-      - [x] Feed the Demon build
-      - [x] Spirit Bomb build
-      - [x] Fiery Demise build
-      - [x] Fallback rotation when talents change
-    - [x] Edge Cases
-      - [x] Low health defensive rotation
-      - [x] Movement phase handling
-      - [x] Cooldown desync recovery
-      - [x] Resource capping prevention
-    - [x] Fixed test_actions.py failures
-      - [x] Fixed Lua condition formatting
-      - [x] Added Spells class for dynamic spell access
-      - [x] Fixed circular imports in API modules
-  - [x] Performance Testing
-    - [x] CPU Usage Benchmarks
-      - [x] Single target rotation (1, 3, 5 minute samples)
-      - [x] AoE rotation with 5+ targets
-      - [x] Heavy movement scenarios
-    - [x] Memory Profiling
-      - [x] Long-duration memory stability
-      - [x] Variable cleanup verification
-      - [x] Table recycling efficiency
-    
-  - [x] Error Handling & Recovery
-    - [x] Invalid talent combinations
-    - [x] Missing spell IDs
-    - [x] Corrupt APL syntax
-    - [x] Resource depletion scenarios
-    - [x] Invalid target conditions
-    
-  - [x] API Integration Validation
-    - [x] PS API Function Coverage
-      - [x] Unit targeting functions
-      - [x] Spell casting functions
-      - [x] Buff/debuff tracking
-      - [x] Resource monitoring
-      - [x] Combat event handlers
-    - [x] Custom Function Integration
-      - [x] Cache system usage
-      - [x] Variable scope handling
-      - [x] Local function optimization
-    
-  - [x] Documentation & Examples
-    - [x] Full VDH conversion guide
-    - [x] Common error solutions
-    - [x] Best practices document
-    - [x] Performance optimization tips
-    - [x] Example APL annotations
+    - [x] Fixed Lua generation formatting
+      - [x] Proper operator spacing in conditions
+      - [x] Consistent style in generated code
+    - [x] Updated test assertions
 
-- [x] Quality Assurance
-  - [x] Code Coverage Metrics
-    - [x] Parser coverage > 90%
-    - [x] Generator coverage > 90%
-    - [x] API mapping coverage > 95%
-  - [x] Performance Benchmarks
-    - [x] Parser execution time < 100ms
-    - [x] Generated Lua execution < 1ms per cycle
-    - [x] Memory usage < 50MB
-  - [x] Static Analysis
-    - [x] Lua syntax validation
-    - [x] Unused variable detection
-    - [x] Circular dependency checks
-    - [x] Type consistency verification
+## Phase 6: Documentation & Cleanup 
+- [x] Update API documentation
+- [x] Create user guide
+- [x] Add example configurations
+- [x] Document test suite
+- [ ] Review and update all documentation for:
+  - [ ] Recent operator formatting changes
+  - [ ] Test suite improvements
+  - [ ] Git history search patterns
+- [ ] Create contribution guidelines
+- [ ] Add performance optimization guide
+- [ ] Document known limitations
 
-## Phase 6: Documentation 
-- [x] Create API documentation
-  - [x] Parser usage guide
-  - [x] API mapping reference
-  - [x] Function reference
-  - [x] Examples and tutorials
-  - [x] Best practices guide
-  - [x] Error handling guide
-  - [x] Performance optimization guide
-
-- [x] Create developer documentation
-  - [x] Architecture overview
-  - [x] Module documentation
-  - [x] Contribution guidelines
-  - [x] Testing guide
-  - [x] Code style guide
-  - [x] API extension guide
-
-## Phase 7: Development Environment 
-- [x] Create development tools
-  - [x] Add .gitignore
-  - [x] Add requirements.txt
-  - [x] Add requirements-dev.txt
-  - [x] Add pytest.ini
-  - [x] Add .editorconfig
-  - [x] Add pre-commit hooks
-  - [x] Add VSCode settings
-
-- [x] Create CI/CD setup
-  - [x] Add GitHub Actions workflow
-  - [x] Configure test automation
-  - [x] Add coverage reporting
-  - [x] Add code quality checks
-
-- [x] Create documentation setup
-  - [x] Add Sphinx configuration
-  - [x] Add basic documentation structure
-  - [x] Add installation guide
-  - [x] Add configuration guide
-  - [x] Add development guide
+## Phase 7: Maintenance & Optimization 
+- [ ] Implement remaining test categories:
+  - [x] Basic Single Target Test
+  - [x] Complex Conditions Test
+  - [x] Cooldowns Management Test
+  - [x] Mechanics Handling Test
+  - [x] Movement Test
+  - [x] Resource Management Test
+  - [x] Full Rotation Tests
+- [ ] Performance optimization
+  - [ ] Profile code execution
+  - [ ] Optimize condition parsing
+  - [ ] Improve template rendering
+  - [ ] Enhance caching
+- [ ] Code cleanup
+  - [ ] Remove unused code
+  - [ ] Standardize error handling
+  - [ ] Improve logging
+  - [ ] Update comments
 
 ## Phase 8: Tools & Utilities 
 - [ ] Create validation tools
@@ -242,7 +180,15 @@
 - [ ] Improve documentation with usage examples
 
 ## Next Steps
-1. Begin Phase 8: Tools & Utilities
+1. Begin implementing remaining test categories:
+   - [x] Complex Conditions Test (Completed)
+   - [x] Cooldowns Management Test (Completed)
+   - [x] Mechanics Handling Test (Completed)
+   - [x] Movement Test (Completed)
+   - [x] Resource Management Test (Completed)
+   - [x] Full Rotation Tests (Completed)
+   - [x] Performance Tests (Completed)
+2. Begin Phase 8: Tools & Utilities
    - [ ] Implement validation tools
    - [ ] Create conversion utilities
 
@@ -255,3 +201,10 @@
 - [x] Add performance benchmarks
 - [x] Create user guides
 - [x] Add example rotations 
+- [x] Implement Basic Single Target Test
+- [x] Implement Complex Conditions Test
+- [x] Implement Cooldowns Management Test
+- [x] Implement Mechanics Handling Test
+- [x] Implement Movement Test
+- [x] Implement Resource Management Test
+- [x] Implement Full Rotation Tests

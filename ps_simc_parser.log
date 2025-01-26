@@ -1392,3 +1392,761 @@
 2025-01-26 02:19:32,613 - ps_simc_parser - INFO - API version check passed: required 1.0.0, current 1.0.0
 2025-01-26 02:19:32,617 - ps_simc_parser - INFO - API version check passed: required 1.0.0, current 1.0.0
 2025-01-26 02:19:32,674 - ps_simc_parser - INFO - API version check passed: required 1.0.0, current 1.0.0
+2025-01-26 02:35:42,159 - ps_simc_parser.utils.compatibility - INFO - Checking compatibility for API version 1.0.0
+2025-01-26 02:35:42,179 - ps_simc_parser.utils.compatibility - INFO - Checking compatibility for API version 1.0.0
+2025-01-26 02:35:42,195 - ps_simc_parser.utils.compatibility - INFO - Checking compatibility for API version 1.0.0
+2025-01-26 02:35:42,210 - ps_simc_parser.utils.compatibility - INFO - Checking compatibility for API version 1.0.0
+2025-01-26 02:37:01,198 - ps_simc_parser.utils.compatibility - INFO - Checking compatibility for API version 1.0.0
+2025-01-26 02:37:01,199 - ps_simc_parser.lua_gen.generator - ERROR - Error generating Lua code: Failed to generate action lists: 'name'
+2025-01-26 02:37:01,199 - ps_simc_parser.utils.recovery - ERROR - Error occurred: Failed to generate action lists: 'name'
+Traceback (most recent call last):
+  File "C:\PS\scripts\ps-simc-parser\ps_simc_parser\lua_gen\generator.py", line 102, in _generate_action_lists
+    action_lists['default'] = self._generate_action_list(actions)
+                              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\PS\scripts\ps-simc-parser\ps_simc_parser\lua_gen\generator.py", line 144, in _generate_action_list
+    spell_name = action['name']
+                 ~~~~~~^^^^^^^^
+KeyError: 'name'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\PS\scripts\ps-simc-parser\ps_simc_parser\lua_gen\generator.py", line 54, in generate
+    'action_lists': self._generate_action_lists(actions),
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\PS\scripts\ps-simc-parser\ps_simc_parser\lua_gen\generator.py", line 109, in _generate_action_lists
+    raise GeneratorError(f'Failed to generate action lists: {str(e)}')
+ps_simc_parser.lua_gen.generator.GeneratorError: Failed to generate action lists: 'name'
+2025-01-26 02:37:01,243 - ps_simc_parser.utils.compatibility - INFO - Checking compatibility for API version 1.0.0
+2025-01-26 02:37:01,243 - ps_simc_parser.lua_gen.generator - ERROR - Error generating Lua code: Failed to generate action lists: 'name'
+2025-01-26 02:37:01,243 - ps_simc_parser.utils.recovery - ERROR - Error occurred: Failed to generate action lists: 'name'
+Traceback (most recent call last):
+  File "C:\PS\scripts\ps-simc-parser\ps_simc_parser\lua_gen\generator.py", line 102, in _generate_action_lists
+    action_lists['default'] = self._generate_action_list(actions)
+                              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\PS\scripts\ps-simc-parser\ps_simc_parser\lua_gen\generator.py", line 144, in _generate_action_list
+    spell_name = action['name']
+                 ~~~~~~^^^^^^^^
+KeyError: 'name'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\PS\scripts\ps-simc-parser\ps_simc_parser\lua_gen\generator.py", line 54, in generate
+    'action_lists': self._generate_action_lists(actions),
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\PS\scripts\ps-simc-parser\ps_simc_parser\lua_gen\generator.py", line 109, in _generate_action_lists
+    raise GeneratorError(f'Failed to generate action lists: {str(e)}')
+ps_simc_parser.lua_gen.generator.GeneratorError: Failed to generate action lists: 'name'
+2025-01-26 02:37:01,282 - ps_simc_parser.utils.compatibility - INFO - Checking compatibility for API version 1.0.0
+2025-01-26 02:37:01,282 - ps_simc_parser.lua_gen.generator - ERROR - Error generating Lua code: Failed to generate action lists: 'name'
+2025-01-26 02:37:01,282 - ps_simc_parser.utils.recovery - ERROR - Error occurred: Failed to generate action lists: 'name'
+Traceback (most recent call last):
+  File "C:\PS\scripts\ps-simc-parser\ps_simc_parser\lua_gen\generator.py", line 102, in _generate_action_lists
+    action_lists['default'] = self._generate_action_list(actions)
+                              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\PS\scripts\ps-simc-parser\ps_simc_parser\lua_gen\generator.py", line 144, in _generate_action_list
+    spell_name = action['name']
+                 ~~~~~~^^^^^^^^
+KeyError: 'name'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\PS\scripts\ps-simc-parser\ps_simc_parser\lua_gen\generator.py", line 54, in generate
+    'action_lists': self._generate_action_lists(actions),
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\PS\scripts\ps-simc-parser\ps_simc_parser\lua_gen\generator.py", line 109, in _generate_action_lists
+    raise GeneratorError(f'Failed to generate action lists: {str(e)}')
+ps_simc_parser.lua_gen.generator.GeneratorError: Failed to generate action lists: 'name'
+2025-01-26 02:37:01,282 - ps_simc_parser.utils.compatibility - INFO - Checking compatibility for API version 1.0.0
+2025-01-26 02:37:01,282 - ps_simc_parser.lua_gen.generator - ERROR - Error generating Lua code: Failed to generate action lists: 'name'
+2025-01-26 02:37:01,282 - ps_simc_parser.utils.recovery - ERROR - Error occurred: Failed to generate action lists: 'name'
+Traceback (most recent call last):
+  File "C:\PS\scripts\ps-simc-parser\ps_simc_parser\lua_gen\generator.py", line 102, in _generate_action_lists
+    action_lists['default'] = self._generate_action_list(actions)
+                              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\PS\scripts\ps-simc-parser\ps_simc_parser\lua_gen\generator.py", line 144, in _generate_action_list
+    spell_name = action['name']
+                 ~~~~~~^^^^^^^^
+KeyError: 'name'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\PS\scripts\ps-simc-parser\ps_simc_parser\lua_gen\generator.py", line 54, in generate
+    'action_lists': self._generate_action_lists(actions),
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\PS\scripts\ps-simc-parser\ps_simc_parser\lua_gen\generator.py", line 109, in _generate_action_lists
+    raise GeneratorError(f'Failed to generate action lists: {str(e)}')
+ps_simc_parser.lua_gen.generator.GeneratorError: Failed to generate action lists: 'name'
+2025-01-26 02:37:01,283 - ps_simc_parser.utils.compatibility - INFO - Checking compatibility for API version 1.0.0
+2025-01-26 02:37:01,288 - ps_simc_parser.utils.compatibility - INFO - Checking compatibility for API version 1.0.0
+2025-01-26 02:37:01,288 - ps_simc_parser.lua_gen.generator - ERROR - Error generating Lua code: Failed to generate action lists: 'name'
+2025-01-26 02:37:01,288 - ps_simc_parser.utils.recovery - ERROR - Error occurred: Failed to generate action lists: 'name'
+Traceback (most recent call last):
+  File "C:\PS\scripts\ps-simc-parser\ps_simc_parser\lua_gen\generator.py", line 102, in _generate_action_lists
+    action_lists['default'] = self._generate_action_list(actions)
+                              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\PS\scripts\ps-simc-parser\ps_simc_parser\lua_gen\generator.py", line 144, in _generate_action_list
+    spell_name = action['name']
+                 ~~~~~~^^^^^^^^
+KeyError: 'name'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\PS\scripts\ps-simc-parser\ps_simc_parser\lua_gen\generator.py", line 54, in generate
+    'action_lists': self._generate_action_lists(actions),
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\PS\scripts\ps-simc-parser\ps_simc_parser\lua_gen\generator.py", line 109, in _generate_action_lists
+    raise GeneratorError(f'Failed to generate action lists: {str(e)}')
+ps_simc_parser.lua_gen.generator.GeneratorError: Failed to generate action lists: 'name'
+2025-01-26 02:38:30,210 - ps_simc_parser.utils.compatibility - INFO - Checking compatibility for API version 1.0.0
+2025-01-26 02:38:30,221 - ps_simc_parser.utils.compatibility - INFO - Checking compatibility for API version 1.0.0
+2025-01-26 02:38:30,226 - ps_simc_parser.utils.compatibility - INFO - Checking compatibility for API version 1.0.0
+2025-01-26 02:38:30,226 - ps_simc_parser.lua_gen.generator - WARNING - Unknown spell: invalid_spell
+2025-01-26 02:38:30,231 - ps_simc_parser.utils.compatibility - INFO - Checking compatibility for API version 1.0.0
+2025-01-26 02:40:09,360 - ps_simc_parser.utils.compatibility - INFO - Checking compatibility for API version 1.0.0
+2025-01-26 02:40:09,371 - ps_simc_parser.utils.compatibility - INFO - Checking compatibility for API version 1.0.0
+2025-01-26 02:40:09,375 - ps_simc_parser.utils.compatibility - INFO - Checking compatibility for API version 1.0.0
+2025-01-26 02:40:09,375 - ps_simc_parser.lua_gen.generator - WARNING - Unknown spell: invalid_spell
+2025-01-26 02:40:09,380 - ps_simc_parser.utils.compatibility - INFO - Checking compatibility for API version 1.0.0
+2025-01-26 02:41:06,814 - ps_simc_parser.utils.compatibility - INFO - Checking compatibility for API version 1.0.0
+2025-01-26 02:41:06,824 - ps_simc_parser.utils.compatibility - INFO - Checking compatibility for API version 1.0.0
+2025-01-26 02:41:06,830 - ps_simc_parser.utils.compatibility - INFO - Checking compatibility for API version 1.0.0
+2025-01-26 02:41:06,830 - ps_simc_parser.lua_gen.generator - ERROR - Failed to generate action lists: Unknown spell: invalid_spell
+2025-01-26 02:41:06,830 - ps_simc_parser.utils.recovery - ERROR - Error occurred: Unknown spell: invalid_spell
+Traceback (most recent call last):
+  File "C:\PS\scripts\ps-simc-parser\ps_simc_parser\lua_gen\generator.py", line 96, in _generate_action_lists
+    return {'main': self._generate_action_list(actions)}
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\PS\scripts\ps-simc-parser\ps_simc_parser\lua_gen\generator.py", line 129, in _generate_action_list
+    raise GeneratorError(f"Unknown spell: {spell_name}")
+ps_simc_parser.lua_gen.generator.GeneratorError: Unknown spell: invalid_spell
+2025-01-26 02:41:06,832 - ps_simc_parser.lua_gen.generator - ERROR - Error generating Lua code: Failed to generate action lists: Unknown spell: invalid_spell
+2025-01-26 02:41:06,832 - ps_simc_parser.utils.recovery - ERROR - Error occurred: Failed to generate action lists: Unknown spell: invalid_spell
+Traceback (most recent call last):
+  File "C:\PS\scripts\ps-simc-parser\ps_simc_parser\lua_gen\generator.py", line 96, in _generate_action_lists
+    return {'main': self._generate_action_list(actions)}
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\PS\scripts\ps-simc-parser\ps_simc_parser\lua_gen\generator.py", line 129, in _generate_action_list
+    raise GeneratorError(f"Unknown spell: {spell_name}")
+ps_simc_parser.lua_gen.generator.GeneratorError: Unknown spell: invalid_spell
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\PS\scripts\ps-simc-parser\ps_simc_parser\lua_gen\generator.py", line 54, in generate
+    'action_lists': self._generate_action_lists(actions),
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\PS\scripts\ps-simc-parser\ps_simc_parser\lua_gen\generator.py", line 108, in _generate_action_lists
+    raise GeneratorError(f"Failed to generate action lists: {e}")
+ps_simc_parser.lua_gen.generator.GeneratorError: Failed to generate action lists: Unknown spell: invalid_spell
+2025-01-26 02:41:06,832 - ps_simc_parser.utils.compatibility - INFO - Checking compatibility for API version 1.0.0
+2025-01-26 02:41:06,837 - ps_simc_parser.utils.compatibility - INFO - Checking compatibility for API version 1.0.0
+2025-01-26 02:42:15,385 - ps_simc_parser.utils.compatibility - INFO - Checking compatibility for API version 1.0.0
+2025-01-26 02:42:15,396 - ps_simc_parser.utils.compatibility - INFO - Checking compatibility for API version 1.0.0
+2025-01-26 02:42:15,401 - ps_simc_parser.utils.compatibility - INFO - Checking compatibility for API version 1.0.0
+2025-01-26 02:42:15,401 - ps_simc_parser.lua_gen.generator - ERROR - Failed to generate action lists: Unknown spell: invalid_spell
+2025-01-26 02:42:15,401 - ps_simc_parser.utils.recovery - ERROR - Error occurred: Unknown spell: invalid_spell
+Traceback (most recent call last):
+  File "C:\PS\scripts\ps-simc-parser\ps_simc_parser\lua_gen\generator.py", line 96, in _generate_action_lists
+    return {'main': self._generate_action_list(actions)}
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\PS\scripts\ps-simc-parser\ps_simc_parser\lua_gen\generator.py", line 127, in _generate_action_list
+    spell = convert_spell(spell_name)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\PS\scripts\ps-simc-parser\ps_simc_parser\api\mapping.py", line 81, in convert_spell
+    raise ValueError(f"Unknown spell: {spell_name}")
+ValueError: Unknown spell: invalid_spell
+2025-01-26 02:42:15,402 - ps_simc_parser.lua_gen.generator - ERROR - Error generating Lua code: Failed to generate action lists: Unknown spell: invalid_spell
+2025-01-26 02:42:15,402 - ps_simc_parser.utils.recovery - ERROR - Error occurred: Failed to generate action lists: Unknown spell: invalid_spell
+Traceback (most recent call last):
+  File "C:\PS\scripts\ps-simc-parser\ps_simc_parser\lua_gen\generator.py", line 96, in _generate_action_lists
+    return {'main': self._generate_action_list(actions)}
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\PS\scripts\ps-simc-parser\ps_simc_parser\lua_gen\generator.py", line 127, in _generate_action_list
+    spell = convert_spell(spell_name)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\PS\scripts\ps-simc-parser\ps_simc_parser\api\mapping.py", line 81, in convert_spell
+    raise ValueError(f"Unknown spell: {spell_name}")
+ValueError: Unknown spell: invalid_spell
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\PS\scripts\ps-simc-parser\ps_simc_parser\lua_gen\generator.py", line 54, in generate
+    'action_lists': self._generate_action_lists(actions),
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\PS\scripts\ps-simc-parser\ps_simc_parser\lua_gen\generator.py", line 108, in _generate_action_lists
+    raise GeneratorError(f"Failed to generate action lists: {e}")
+ps_simc_parser.lua_gen.generator.GeneratorError: Failed to generate action lists: Unknown spell: invalid_spell
+2025-01-26 02:42:15,403 - ps_simc_parser.utils.compatibility - INFO - Checking compatibility for API version 1.0.0
+2025-01-26 02:42:15,409 - ps_simc_parser.utils.compatibility - INFO - Checking compatibility for API version 1.0.0
+2025-01-26 02:43:19,199 - ps_simc_parser.utils.compatibility - INFO - Checking compatibility for API version 1.0.0
+2025-01-26 02:43:19,210 - ps_simc_parser.utils.compatibility - INFO - Checking compatibility for API version 1.0.0
+2025-01-26 02:43:19,214 - ps_simc_parser.utils.compatibility - INFO - Checking compatibility for API version 1.0.0
+2025-01-26 02:43:19,215 - ps_simc_parser.lua_gen.generator - ERROR - Failed to generate action lists: Unknown spell: invalid_spell
+2025-01-26 02:43:19,215 - ps_simc_parser.utils.recovery - ERROR - Error occurred: Unknown spell: invalid_spell
+Traceback (most recent call last):
+  File "C:\PS\scripts\ps-simc-parser\ps_simc_parser\lua_gen\generator.py", line 96, in _generate_action_lists
+    return {'main': self._generate_action_list(actions)}
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\PS\scripts\ps-simc-parser\ps_simc_parser\lua_gen\generator.py", line 127, in _generate_action_list
+    spell = convert_spell(spell_name)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\PS\scripts\ps-simc-parser\ps_simc_parser\api\mapping.py", line 74, in convert_spell
+    raise ValueError(f"Unknown spell: {spell_name}")
+ValueError: Unknown spell: invalid_spell
+2025-01-26 02:43:19,216 - ps_simc_parser.lua_gen.generator - ERROR - Error generating Lua code: Failed to generate action lists: Unknown spell: invalid_spell
+2025-01-26 02:43:19,216 - ps_simc_parser.utils.recovery - ERROR - Error occurred: Failed to generate action lists: Unknown spell: invalid_spell
+Traceback (most recent call last):
+  File "C:\PS\scripts\ps-simc-parser\ps_simc_parser\lua_gen\generator.py", line 96, in _generate_action_lists
+    return {'main': self._generate_action_list(actions)}
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\PS\scripts\ps-simc-parser\ps_simc_parser\lua_gen\generator.py", line 127, in _generate_action_list
+    spell = convert_spell(spell_name)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\PS\scripts\ps-simc-parser\ps_simc_parser\api\mapping.py", line 74, in convert_spell
+    raise ValueError(f"Unknown spell: {spell_name}")
+ValueError: Unknown spell: invalid_spell
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\PS\scripts\ps-simc-parser\ps_simc_parser\lua_gen\generator.py", line 54, in generate
+    'action_lists': self._generate_action_lists(actions),
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\PS\scripts\ps-simc-parser\ps_simc_parser\lua_gen\generator.py", line 108, in _generate_action_lists
+    raise GeneratorError(f"Failed to generate action lists: {e}")
+ps_simc_parser.lua_gen.generator.GeneratorError: Failed to generate action lists: Unknown spell: invalid_spell
+2025-01-26 02:43:19,218 - ps_simc_parser.utils.compatibility - INFO - Checking compatibility for API version 1.0.0
+2025-01-26 02:43:19,224 - ps_simc_parser.utils.compatibility - INFO - Checking compatibility for API version 1.0.0
+2025-01-26 02:44:05,464 - ps_simc_parser.utils.compatibility - INFO - Checking compatibility for API version 1.0.0
+2025-01-26 02:44:05,475 - ps_simc_parser.utils.compatibility - INFO - Checking compatibility for API version 1.0.0
+2025-01-26 02:44:05,480 - ps_simc_parser.utils.compatibility - INFO - Checking compatibility for API version 1.0.0
+2025-01-26 02:44:05,480 - ps_simc_parser.lua_gen.generator - ERROR - Failed to generate action lists: Unknown spell: invalid_spell
+2025-01-26 02:44:05,480 - ps_simc_parser.utils.recovery - ERROR - Error occurred: Unknown spell: invalid_spell
+Traceback (most recent call last):
+  File "C:\PS\scripts\ps-simc-parser\ps_simc_parser\lua_gen\generator.py", line 96, in _generate_action_lists
+    return {'main': self._generate_action_list(actions)}
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\PS\scripts\ps-simc-parser\ps_simc_parser\lua_gen\generator.py", line 127, in _generate_action_list
+    spell = convert_spell(spell_name)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\PS\scripts\ps-simc-parser\ps_simc_parser\api\mapping.py", line 74, in convert_spell
+    raise ValueError(f"Unknown spell: {spell_name}")
+ValueError: Unknown spell: invalid_spell
+2025-01-26 02:44:05,481 - ps_simc_parser.lua_gen.generator - ERROR - Error generating Lua code: Failed to generate action lists: Unknown spell: invalid_spell
+2025-01-26 02:44:05,481 - ps_simc_parser.utils.recovery - ERROR - Error occurred: Failed to generate action lists: Unknown spell: invalid_spell
+Traceback (most recent call last):
+  File "C:\PS\scripts\ps-simc-parser\ps_simc_parser\lua_gen\generator.py", line 96, in _generate_action_lists
+    return {'main': self._generate_action_list(actions)}
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\PS\scripts\ps-simc-parser\ps_simc_parser\lua_gen\generator.py", line 127, in _generate_action_list
+    spell = convert_spell(spell_name)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\PS\scripts\ps-simc-parser\ps_simc_parser\api\mapping.py", line 74, in convert_spell
+    raise ValueError(f"Unknown spell: {spell_name}")
+ValueError: Unknown spell: invalid_spell
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\PS\scripts\ps-simc-parser\ps_simc_parser\lua_gen\generator.py", line 54, in generate
+    'action_lists': self._generate_action_lists(actions),
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\PS\scripts\ps-simc-parser\ps_simc_parser\lua_gen\generator.py", line 108, in _generate_action_lists
+    raise GeneratorError(f"Failed to generate action lists: {e}")
+ps_simc_parser.lua_gen.generator.GeneratorError: Failed to generate action lists: Unknown spell: invalid_spell
+2025-01-26 02:44:05,482 - ps_simc_parser.utils.compatibility - INFO - Checking compatibility for API version 1.0.0
+2025-01-26 02:44:05,488 - ps_simc_parser.utils.compatibility - INFO - Checking compatibility for API version 1.0.0
+2025-01-26 02:44:52,396 - ps_simc_parser.lua_gen.generator - ERROR - Failed to generate action lists: Unknown spell: invalid_spell
+2025-01-26 02:44:52,396 - ps_simc_parser.utils.recovery - ERROR - Error occurred: Unknown spell: invalid_spell
+Traceback (most recent call last):
+  File "C:\PS\scripts\ps-simc-parser\ps_simc_parser\lua_gen\generator.py", line 116, in _generate_action_lists
+    return {'main': self._generate_action_list(actions)}
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\PS\scripts\ps-simc-parser\ps_simc_parser\lua_gen\generator.py", line 147, in _generate_action_list
+    spell = convert_spell(spell_name)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\PS\scripts\ps-simc-parser\ps_simc_parser\api\mapping.py", line 74, in convert_spell
+    raise ValueError(f"Unknown spell: {spell_name}")
+ValueError: Unknown spell: invalid_spell
+2025-01-26 02:44:52,398 - ps_simc_parser.lua_gen.generator - ERROR - Failed to generate code: Failed to generate action lists: Unknown spell: invalid_spell
+2025-01-26 02:44:52,398 - ps_simc_parser.utils.recovery - ERROR - Error occurred: Failed to generate action lists: Unknown spell: invalid_spell
+Traceback (most recent call last):
+  File "C:\PS\scripts\ps-simc-parser\ps_simc_parser\lua_gen\generator.py", line 116, in _generate_action_lists
+    return {'main': self._generate_action_list(actions)}
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\PS\scripts\ps-simc-parser\ps_simc_parser\lua_gen\generator.py", line 147, in _generate_action_list
+    spell = convert_spell(spell_name)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\PS\scripts\ps-simc-parser\ps_simc_parser\api\mapping.py", line 74, in convert_spell
+    raise ValueError(f"Unknown spell: {spell_name}")
+ValueError: Unknown spell: invalid_spell
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\PS\scripts\ps-simc-parser\ps_simc_parser\lua_gen\generator.py", line 61, in generate
+    action_lists = self._generate_action_lists(actions)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\PS\scripts\ps-simc-parser\ps_simc_parser\lua_gen\generator.py", line 128, in _generate_action_lists
+    raise GeneratorError(f"Failed to generate action lists: {e}")
+ps_simc_parser.lua_gen.generator.GeneratorError: Failed to generate action lists: Unknown spell: invalid_spell
+2025-01-26 02:45:35,329 - ps_simc_parser.lua_gen.generator - ERROR - Failed to generate action lists: Unknown spell: invalid_spell
+2025-01-26 02:45:35,330 - ps_simc_parser.utils.recovery - ERROR - Error occurred: Unknown spell: invalid_spell
+Traceback (most recent call last):
+  File "C:\PS\scripts\ps-simc-parser\ps_simc_parser\lua_gen\generator.py", line 116, in _generate_action_lists
+    return {'main': self._generate_action_list(actions)}
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\PS\scripts\ps-simc-parser\ps_simc_parser\lua_gen\generator.py", line 147, in _generate_action_list
+    spell = convert_spell(spell_name)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\PS\scripts\ps-simc-parser\ps_simc_parser\api\mapping.py", line 74, in convert_spell
+    raise ValueError(f"Unknown spell: {spell_name}")
+ValueError: Unknown spell: invalid_spell
+2025-01-26 02:45:35,332 - ps_simc_parser.lua_gen.generator - ERROR - Failed to generate code: Failed to generate action lists: Unknown spell: invalid_spell
+2025-01-26 02:45:35,332 - ps_simc_parser.utils.recovery - ERROR - Error occurred: Failed to generate action lists: Unknown spell: invalid_spell
+Traceback (most recent call last):
+  File "C:\PS\scripts\ps-simc-parser\ps_simc_parser\lua_gen\generator.py", line 116, in _generate_action_lists
+    return {'main': self._generate_action_list(actions)}
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\PS\scripts\ps-simc-parser\ps_simc_parser\lua_gen\generator.py", line 147, in _generate_action_list
+    spell = convert_spell(spell_name)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\PS\scripts\ps-simc-parser\ps_simc_parser\api\mapping.py", line 74, in convert_spell
+    raise ValueError(f"Unknown spell: {spell_name}")
+ValueError: Unknown spell: invalid_spell
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\PS\scripts\ps-simc-parser\ps_simc_parser\lua_gen\generator.py", line 61, in generate
+    action_lists = self._generate_action_lists(actions)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\PS\scripts\ps-simc-parser\ps_simc_parser\lua_gen\generator.py", line 128, in _generate_action_lists
+    raise GeneratorError(f"Failed to generate action lists: {e}")
+ps_simc_parser.lua_gen.generator.GeneratorError: Failed to generate action lists: Unknown spell: invalid_spell
+2025-01-26 02:48:04,603 - ps_simc_parser.lua_gen.generator - ERROR - Failed to generate action lists: Unknown spell: invalid_spell
+2025-01-26 02:48:04,604 - ps_simc_parser.utils.recovery - ERROR - Error occurred: Unknown spell: invalid_spell
+Traceback (most recent call last):
+  File "C:\PS\scripts\ps-simc-parser\ps_simc_parser\lua_gen\generator.py", line 116, in _generate_action_lists
+    return {'main': self._generate_action_list(actions)}
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\PS\scripts\ps-simc-parser\ps_simc_parser\lua_gen\generator.py", line 147, in _generate_action_list
+    spell = convert_spell(spell_name)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\PS\scripts\ps-simc-parser\ps_simc_parser\api\mapping.py", line 74, in convert_spell
+    raise ValueError(f"Unknown spell: {spell_name}")
+ValueError: Unknown spell: invalid_spell
+2025-01-26 02:48:04,606 - ps_simc_parser.lua_gen.generator - ERROR - Failed to generate code: Failed to generate action lists: Unknown spell: invalid_spell
+2025-01-26 02:48:04,606 - ps_simc_parser.utils.recovery - ERROR - Error occurred: Failed to generate action lists: Unknown spell: invalid_spell
+Traceback (most recent call last):
+  File "C:\PS\scripts\ps-simc-parser\ps_simc_parser\lua_gen\generator.py", line 116, in _generate_action_lists
+    return {'main': self._generate_action_list(actions)}
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\PS\scripts\ps-simc-parser\ps_simc_parser\lua_gen\generator.py", line 147, in _generate_action_list
+    spell = convert_spell(spell_name)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\PS\scripts\ps-simc-parser\ps_simc_parser\api\mapping.py", line 74, in convert_spell
+    raise ValueError(f"Unknown spell: {spell_name}")
+ValueError: Unknown spell: invalid_spell
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\PS\scripts\ps-simc-parser\ps_simc_parser\lua_gen\generator.py", line 61, in generate
+    action_lists = self._generate_action_lists(actions)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\PS\scripts\ps-simc-parser\ps_simc_parser\lua_gen\generator.py", line 128, in _generate_action_lists
+    raise GeneratorError(f"Failed to generate action lists: {e}")
+ps_simc_parser.lua_gen.generator.GeneratorError: Failed to generate action lists: Unknown spell: invalid_spell
+2025-01-26 02:49:01,939 - ps_simc_parser.lua_gen.generator - ERROR - Failed to generate action lists: Failed to convert spell invalid_spell: Unknown spell: invalid_spell
+2025-01-26 02:49:01,939 - ps_simc_parser.utils.recovery - ERROR - Error occurred: Failed to convert spell invalid_spell: Unknown spell: invalid_spell
+Traceback (most recent call last):
+  File "C:\PS\scripts\ps-simc-parser\ps_simc_parser\lua_gen\generator.py", line 139, in _generate_action_list
+    spell = convert_spell(spell_name)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\PS\scripts\ps-simc-parser\ps_simc_parser\api\mapping.py", line 74, in convert_spell
+    raise ValueError(f"Unknown spell: {spell_name}")
+ValueError: Unknown spell: invalid_spell
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\PS\scripts\ps-simc-parser\ps_simc_parser\lua_gen\generator.py", line 116, in _generate_action_lists
+    return {'main': self._generate_action_list(actions)}
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\PS\scripts\ps-simc-parser\ps_simc_parser\lua_gen\generator.py", line 141, in _generate_action_list
+    raise GeneratorError(f"Failed to convert spell {spell_name}: {e}")
+ps_simc_parser.lua_gen.generator.GeneratorError: Failed to convert spell invalid_spell: Unknown spell: invalid_spell
+2025-01-26 02:49:01,941 - ps_simc_parser.lua_gen.generator - ERROR - Failed to generate code: Failed to generate action lists: Failed to convert spell invalid_spell: Unknown spell: invalid_spell
+2025-01-26 02:49:01,941 - ps_simc_parser.utils.recovery - ERROR - Error occurred: Failed to generate action lists: Failed to convert spell invalid_spell: Unknown spell: invalid_spell
+Traceback (most recent call last):
+  File "C:\PS\scripts\ps-simc-parser\ps_simc_parser\lua_gen\generator.py", line 139, in _generate_action_list
+    spell = convert_spell(spell_name)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\PS\scripts\ps-simc-parser\ps_simc_parser\api\mapping.py", line 74, in convert_spell
+    raise ValueError(f"Unknown spell: {spell_name}")
+ValueError: Unknown spell: invalid_spell
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\PS\scripts\ps-simc-parser\ps_simc_parser\lua_gen\generator.py", line 116, in _generate_action_lists
+    return {'main': self._generate_action_list(actions)}
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\PS\scripts\ps-simc-parser\ps_simc_parser\lua_gen\generator.py", line 141, in _generate_action_list
+    raise GeneratorError(f"Failed to convert spell {spell_name}: {e}")
+ps_simc_parser.lua_gen.generator.GeneratorError: Failed to convert spell invalid_spell: Unknown spell: invalid_spell
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\PS\scripts\ps-simc-parser\ps_simc_parser\lua_gen\generator.py", line 61, in generate
+    action_lists = self._generate_action_lists(actions)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\PS\scripts\ps-simc-parser\ps_simc_parser\lua_gen\generator.py", line 128, in _generate_action_lists
+    raise GeneratorError(f"Failed to generate action lists: {e}")
+ps_simc_parser.lua_gen.generator.GeneratorError: Failed to generate action lists: Failed to convert spell invalid_spell: Unknown spell: invalid_spell
+2025-01-26 02:52:20,969 - ps_simc_parser.lua_gen.generator - ERROR - Failed to generate action lists: Failed to convert spell invalid_spell: Unknown spell: invalid_spell
+2025-01-26 02:52:20,971 - ps_simc_parser.utils.recovery - ERROR - Error occurred: Failed to convert spell invalid_spell: Unknown spell: invalid_spell
+Traceback (most recent call last):
+  File "C:\PS\scripts\ps-simc-parser\ps_simc_parser\lua_gen\generator.py", line 139, in _generate_action_list
+    spell = convert_spell(spell_name)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\PS\scripts\ps-simc-parser\ps_simc_parser\api\mapping.py", line 74, in convert_spell
+    raise ValueError(f"Unknown spell: {spell_name}")
+ValueError: Unknown spell: invalid_spell
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\PS\scripts\ps-simc-parser\ps_simc_parser\lua_gen\generator.py", line 116, in _generate_action_lists
+    return {'main': self._generate_action_list(actions)}
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\PS\scripts\ps-simc-parser\ps_simc_parser\lua_gen\generator.py", line 141, in _generate_action_list
+    raise GeneratorError(f"Failed to convert spell {spell_name}: {e}")
+ps_simc_parser.lua_gen.generator.GeneratorError: Failed to convert spell invalid_spell: Unknown spell: invalid_spell
+2025-01-26 02:52:20,974 - ps_simc_parser.lua_gen.generator - ERROR - Failed to generate code: Failed to generate action lists: Failed to convert spell invalid_spell: Unknown spell: invalid_spell
+2025-01-26 02:52:20,974 - ps_simc_parser.utils.recovery - ERROR - Error occurred: Failed to generate action lists: Failed to convert spell invalid_spell: Unknown spell: invalid_spell
+Traceback (most recent call last):
+  File "C:\PS\scripts\ps-simc-parser\ps_simc_parser\lua_gen\generator.py", line 139, in _generate_action_list
+    spell = convert_spell(spell_name)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\PS\scripts\ps-simc-parser\ps_simc_parser\api\mapping.py", line 74, in convert_spell
+    raise ValueError(f"Unknown spell: {spell_name}")
+ValueError: Unknown spell: invalid_spell
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\PS\scripts\ps-simc-parser\ps_simc_parser\lua_gen\generator.py", line 116, in _generate_action_lists
+    return {'main': self._generate_action_list(actions)}
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\PS\scripts\ps-simc-parser\ps_simc_parser\lua_gen\generator.py", line 141, in _generate_action_list
+    raise GeneratorError(f"Failed to convert spell {spell_name}: {e}")
+ps_simc_parser.lua_gen.generator.GeneratorError: Failed to convert spell invalid_spell: Unknown spell: invalid_spell
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\PS\scripts\ps-simc-parser\ps_simc_parser\lua_gen\generator.py", line 61, in generate
+    action_lists = self._generate_action_lists(actions)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\PS\scripts\ps-simc-parser\ps_simc_parser\lua_gen\generator.py", line 128, in _generate_action_lists
+    raise GeneratorError(f"Failed to generate action lists: {e}")
+ps_simc_parser.lua_gen.generator.GeneratorError: Failed to generate action lists: Failed to convert spell invalid_spell: Unknown spell: invalid_spell
+2025-01-26 02:53:27,557 - ps_simc_parser.lua_gen.generator - ERROR - Failed to generate code: Failed to generate action lists: Failed to convert spell invalid_spell: Unknown spell: invalid_spell
+2025-01-26 02:53:27,558 - ps_simc_parser.utils.recovery - ERROR - Error occurred: Failed to generate action lists: Failed to convert spell invalid_spell: Unknown spell: invalid_spell
+Traceback (most recent call last):
+  File "C:\PS\scripts\ps-simc-parser\ps_simc_parser\lua_gen\generator.py", line 149, in _generate_action_list
+    spell = convert_spell(spell_name)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\PS\scripts\ps-simc-parser\ps_simc_parser\api\mapping.py", line 74, in convert_spell
+    raise ValueError(f"Unknown spell: {spell_name}")
+ValueError: Unknown spell: invalid_spell
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\PS\scripts\ps-simc-parser\ps_simc_parser\lua_gen\generator.py", line 119, in _generate_action_lists
+    return {'main': self._generate_action_list(actions)}
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\PS\scripts\ps-simc-parser\ps_simc_parser\lua_gen\generator.py", line 151, in _generate_action_list
+    raise GeneratorError(f"Failed to convert spell {spell_name}: {e}")
+ps_simc_parser.lua_gen.generator.GeneratorError: Failed to convert spell invalid_spell: Unknown spell: invalid_spell
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\PS\scripts\ps-simc-parser\ps_simc_parser\lua_gen\generator.py", line 61, in generate
+    action_lists = self._generate_action_lists(actions)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\PS\scripts\ps-simc-parser\ps_simc_parser\lua_gen\generator.py", line 132, in _generate_action_lists
+    raise GeneratorError(f"Failed to generate action lists: {e}")
+ps_simc_parser.lua_gen.generator.GeneratorError: Failed to generate action lists: Failed to convert spell invalid_spell: Unknown spell: invalid_spell
+2025-01-26 02:54:22,157 - ps_simc_parser.lua_gen.generator - ERROR - Failed to generate code: Failed to generate action lists: Failed to convert spell invalid_spell: Unknown spell: invalid_spell
+2025-01-26 02:54:22,157 - ps_simc_parser.utils.recovery - ERROR - Error occurred: Failed to generate action lists: Failed to convert spell invalid_spell: Unknown spell: invalid_spell
+Traceback (most recent call last):
+  File "C:\PS\scripts\ps-simc-parser\ps_simc_parser\lua_gen\generator.py", line 149, in _generate_action_list
+    spell = convert_spell(spell_name)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\PS\scripts\ps-simc-parser\ps_simc_parser\api\mapping.py", line 74, in convert_spell
+    raise ValueError(f"Unknown spell: {spell_name}")
+ValueError: Unknown spell: invalid_spell
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\PS\scripts\ps-simc-parser\ps_simc_parser\lua_gen\generator.py", line 119, in _generate_action_lists
+    return {'main': self._generate_action_list(actions)}
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\PS\scripts\ps-simc-parser\ps_simc_parser\lua_gen\generator.py", line 151, in _generate_action_list
+    raise GeneratorError(f"Failed to convert spell {spell_name}: {e}")
+ps_simc_parser.lua_gen.generator.GeneratorError: Failed to convert spell invalid_spell: Unknown spell: invalid_spell
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\PS\scripts\ps-simc-parser\ps_simc_parser\lua_gen\generator.py", line 61, in generate
+    action_lists = self._generate_action_lists(actions)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\PS\scripts\ps-simc-parser\ps_simc_parser\lua_gen\generator.py", line 132, in _generate_action_lists
+    raise GeneratorError(f"Failed to generate action lists: {e}")
+ps_simc_parser.lua_gen.generator.GeneratorError: Failed to generate action lists: Failed to convert spell invalid_spell: Unknown spell: invalid_spell
+2025-01-26 02:54:27,424 - ps_simc_parser.lua_gen.generator - ERROR - Failed to generate code: Failed to generate action lists: Failed to convert spell invalid_spell: Unknown spell: invalid_spell
+2025-01-26 02:54:27,425 - ps_simc_parser.utils.recovery - ERROR - Error occurred: Failed to generate action lists: Failed to convert spell invalid_spell: Unknown spell: invalid_spell
+Traceback (most recent call last):
+  File "C:\PS\scripts\ps-simc-parser\ps_simc_parser\lua_gen\generator.py", line 149, in _generate_action_list
+    spell = convert_spell(spell_name)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\PS\scripts\ps-simc-parser\ps_simc_parser\api\mapping.py", line 74, in convert_spell
+    raise ValueError(f"Unknown spell: {spell_name}")
+ValueError: Unknown spell: invalid_spell
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\PS\scripts\ps-simc-parser\ps_simc_parser\lua_gen\generator.py", line 119, in _generate_action_lists
+    return {'main': self._generate_action_list(actions)}
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\PS\scripts\ps-simc-parser\ps_simc_parser\lua_gen\generator.py", line 151, in _generate_action_list
+    raise GeneratorError(f"Failed to convert spell {spell_name}: {e}")
+ps_simc_parser.lua_gen.generator.GeneratorError: Failed to convert spell invalid_spell: Unknown spell: invalid_spell
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\PS\scripts\ps-simc-parser\ps_simc_parser\lua_gen\generator.py", line 61, in generate
+    action_lists = self._generate_action_lists(actions)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\PS\scripts\ps-simc-parser\ps_simc_parser\lua_gen\generator.py", line 132, in _generate_action_lists
+    raise GeneratorError(f"Failed to generate action lists: {e}")
+ps_simc_parser.lua_gen.generator.GeneratorError: Failed to generate action lists: Failed to convert spell invalid_spell: Unknown spell: invalid_spell
+2025-01-26 02:54:50,683 - ps_simc_parser.lua_gen.generator - ERROR - Failed to generate code: Failed to generate action lists: Unknown spell: invalid_spell
+2025-01-26 02:54:50,685 - ps_simc_parser.utils.recovery - ERROR - Error occurred: Failed to generate action lists: Unknown spell: invalid_spell
+Traceback (most recent call last):
+  File "C:\PS\scripts\ps-simc-parser\ps_simc_parser\lua_gen\generator.py", line 149, in _generate_action_list
+    spell = convert_spell(spell_name)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\PS\scripts\ps-simc-parser\ps_simc_parser\api\mapping.py", line 74, in convert_spell
+    raise ValueError(f"Unknown spell: {spell_name}")
+ValueError: Unknown spell: invalid_spell
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\PS\scripts\ps-simc-parser\ps_simc_parser\lua_gen\generator.py", line 119, in _generate_action_lists
+    return {'main': self._generate_action_list(actions)}
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\PS\scripts\ps-simc-parser\ps_simc_parser\lua_gen\generator.py", line 151, in _generate_action_list
+    raise GeneratorError(f"Unknown spell: {spell_name}")
+ps_simc_parser.lua_gen.generator.GeneratorError: Unknown spell: invalid_spell
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\PS\scripts\ps-simc-parser\ps_simc_parser\lua_gen\generator.py", line 61, in generate
+    action_lists = self._generate_action_lists(actions)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\PS\scripts\ps-simc-parser\ps_simc_parser\lua_gen\generator.py", line 132, in _generate_action_lists
+    raise GeneratorError(f"Failed to generate action lists: {e}")
+ps_simc_parser.lua_gen.generator.GeneratorError: Failed to generate action lists: Unknown spell: invalid_spell
+2025-01-26 02:54:57,236 - ps_simc_parser.lua_gen.generator - ERROR - Failed to generate code: Failed to generate action lists: Unknown spell: invalid_spell
+2025-01-26 02:54:57,237 - ps_simc_parser.utils.recovery - ERROR - Error occurred: Failed to generate action lists: Unknown spell: invalid_spell
+Traceback (most recent call last):
+  File "C:\PS\scripts\ps-simc-parser\ps_simc_parser\lua_gen\generator.py", line 149, in _generate_action_list
+    spell = convert_spell(spell_name)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\PS\scripts\ps-simc-parser\ps_simc_parser\api\mapping.py", line 74, in convert_spell
+    raise ValueError(f"Unknown spell: {spell_name}")
+ValueError: Unknown spell: invalid_spell
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\PS\scripts\ps-simc-parser\ps_simc_parser\lua_gen\generator.py", line 119, in _generate_action_lists
+    return {'main': self._generate_action_list(actions)}
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\PS\scripts\ps-simc-parser\ps_simc_parser\lua_gen\generator.py", line 151, in _generate_action_list
+    raise GeneratorError(f"Unknown spell: {spell_name}")
+ps_simc_parser.lua_gen.generator.GeneratorError: Unknown spell: invalid_spell
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\PS\scripts\ps-simc-parser\ps_simc_parser\lua_gen\generator.py", line 61, in generate
+    action_lists = self._generate_action_lists(actions)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\PS\scripts\ps-simc-parser\ps_simc_parser\lua_gen\generator.py", line 132, in _generate_action_lists
+    raise GeneratorError(f"Failed to generate action lists: {e}")
+ps_simc_parser.lua_gen.generator.GeneratorError: Failed to generate action lists: Unknown spell: invalid_spell
+2025-01-26 02:55:30,137 - ps_simc_parser.lua_gen.generator - ERROR - Failed to generate code: Failed to generate action lists: Unknown spell: invalid_spell
+2025-01-26 02:55:30,138 - ps_simc_parser.utils.recovery - ERROR - Error occurred: Failed to generate action lists: Unknown spell: invalid_spell
+Traceback (most recent call last):
+  File "C:\PS\scripts\ps-simc-parser\ps_simc_parser\lua_gen\generator.py", line 149, in _generate_action_list
+    spell = convert_spell(spell_name)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\PS\scripts\ps-simc-parser\ps_simc_parser\api\mapping.py", line 74, in convert_spell
+    raise ValueError(f"Unknown spell: {spell_name}")
+ValueError: Unknown spell: invalid_spell
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\PS\scripts\ps-simc-parser\ps_simc_parser\lua_gen\generator.py", line 119, in _generate_action_lists
+    return {'main': self._generate_action_list(actions)}
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\PS\scripts\ps-simc-parser\ps_simc_parser\lua_gen\generator.py", line 151, in _generate_action_list
+    raise GeneratorError(f"Unknown spell: {spell_name}")
+ps_simc_parser.lua_gen.generator.GeneratorError: Unknown spell: invalid_spell
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\PS\scripts\ps-simc-parser\ps_simc_parser\lua_gen\generator.py", line 61, in generate
+    action_lists = self._generate_action_lists(actions)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\PS\scripts\ps-simc-parser\ps_simc_parser\lua_gen\generator.py", line 132, in _generate_action_lists
+    raise GeneratorError(f"Failed to generate action lists: {e}")
+ps_simc_parser.lua_gen.generator.GeneratorError: Failed to generate action lists: Unknown spell: invalid_spell
+2025-01-26 02:55:32,816 - ps_simc_parser.lua_gen.generator - ERROR - Failed to generate code: Failed to generate action lists: Unknown spell: invalid_spell
+2025-01-26 02:55:32,816 - ps_simc_parser.utils.recovery - ERROR - Error occurred: Failed to generate action lists: Unknown spell: invalid_spell
+Traceback (most recent call last):
+  File "C:\PS\scripts\ps-simc-parser\ps_simc_parser\lua_gen\generator.py", line 149, in _generate_action_list
+    spell = convert_spell(spell_name)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\PS\scripts\ps-simc-parser\ps_simc_parser\api\mapping.py", line 74, in convert_spell
+    raise ValueError(f"Unknown spell: {spell_name}")
+ValueError: Unknown spell: invalid_spell
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\PS\scripts\ps-simc-parser\ps_simc_parser\lua_gen\generator.py", line 119, in _generate_action_lists
+    return {'main': self._generate_action_list(actions)}
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\PS\scripts\ps-simc-parser\ps_simc_parser\lua_gen\generator.py", line 151, in _generate_action_list
+    raise GeneratorError(f"Unknown spell: {spell_name}")
+ps_simc_parser.lua_gen.generator.GeneratorError: Unknown spell: invalid_spell
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\PS\scripts\ps-simc-parser\ps_simc_parser\lua_gen\generator.py", line 61, in generate
+    action_lists = self._generate_action_lists(actions)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\PS\scripts\ps-simc-parser\ps_simc_parser\lua_gen\generator.py", line 132, in _generate_action_lists
+    raise GeneratorError(f"Failed to generate action lists: {e}")
+ps_simc_parser.lua_gen.generator.GeneratorError: Failed to generate action lists: Unknown spell: invalid_spell
+2025-01-26 02:56:03,066 - ps_simc_parser.lua_gen.generator - ERROR - Failed to generate code: Failed to generate action lists: Unknown spell: invalid_spell
+2025-01-26 02:56:03,066 - ps_simc_parser.utils.recovery - ERROR - Error occurred: Failed to generate action lists: Unknown spell: invalid_spell
+Traceback (most recent call last):
+  File "C:\PS\scripts\ps-simc-parser\ps_simc_parser\lua_gen\generator.py", line 149, in _generate_action_list
+    spell = convert_spell(spell_name)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\PS\scripts\ps-simc-parser\ps_simc_parser\api\mapping.py", line 74, in convert_spell
+    raise ValueError(f"Unknown spell: {spell_name}")
+ValueError: Unknown spell: invalid_spell
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\PS\scripts\ps-simc-parser\ps_simc_parser\lua_gen\generator.py", line 119, in _generate_action_lists
+    return {'main': self._generate_action_list(actions)}
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\PS\scripts\ps-simc-parser\ps_simc_parser\lua_gen\generator.py", line 151, in _generate_action_list
+    raise GeneratorError(f"Unknown spell: {spell_name}")
+ps_simc_parser.lua_gen.generator.GeneratorError: Unknown spell: invalid_spell
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\PS\scripts\ps-simc-parser\ps_simc_parser\lua_gen\generator.py", line 61, in generate
+    action_lists = self._generate_action_lists(actions)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\PS\scripts\ps-simc-parser\ps_simc_parser\lua_gen\generator.py", line 132, in _generate_action_lists
+    raise GeneratorError(f"Failed to generate action lists: {e}")
+ps_simc_parser.lua_gen.generator.GeneratorError: Failed to generate action lists: Unknown spell: invalid_spell
+2025-01-26 02:56:06,661 - ps_simc_parser.lua_gen.generator - ERROR - Failed to generate code: Failed to generate action lists: Unknown spell: invalid_spell
+2025-01-26 02:56:06,662 - ps_simc_parser.utils.recovery - ERROR - Error occurred: Failed to generate action lists: Unknown spell: invalid_spell
+Traceback (most recent call last):
+  File "C:\PS\scripts\ps-simc-parser\ps_simc_parser\lua_gen\generator.py", line 149, in _generate_action_list
+    spell = convert_spell(spell_name)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\PS\scripts\ps-simc-parser\ps_simc_parser\api\mapping.py", line 74, in convert_spell
+    raise ValueError(f"Unknown spell: {spell_name}")
+ValueError: Unknown spell: invalid_spell
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\PS\scripts\ps-simc-parser\ps_simc_parser\lua_gen\generator.py", line 119, in _generate_action_lists
+    return {'main': self._generate_action_list(actions)}
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\PS\scripts\ps-simc-parser\ps_simc_parser\lua_gen\generator.py", line 151, in _generate_action_list
+    raise GeneratorError(f"Unknown spell: {spell_name}")
+ps_simc_parser.lua_gen.generator.GeneratorError: Unknown spell: invalid_spell
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\PS\scripts\ps-simc-parser\ps_simc_parser\lua_gen\generator.py", line 61, in generate
+    action_lists = self._generate_action_lists(actions)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\PS\scripts\ps-simc-parser\ps_simc_parser\lua_gen\generator.py", line 132, in _generate_action_lists
+    raise GeneratorError(f"Failed to generate action lists: {e}")
+ps_simc_parser.lua_gen.generator.GeneratorError: Failed to generate action lists: Unknown spell: invalid_spell
+2025-01-26 02:56:12,033 - ps_simc_parser.lua_gen.generator - ERROR - Failed to generate code: Failed to generate action lists: Unknown spell: invalid_spell
+2025-01-26 02:56:12,033 - ps_simc_parser.utils.recovery - ERROR - Error occurred: Failed to generate action lists: Unknown spell: invalid_spell
+Traceback (most recent call last):
+  File "C:\PS\scripts\ps-simc-parser\ps_simc_parser\lua_gen\generator.py", line 149, in _generate_action_list
+    spell = convert_spell(spell_name)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\PS\scripts\ps-simc-parser\ps_simc_parser\api\mapping.py", line 74, in convert_spell
+    raise ValueError(f"Unknown spell: {spell_name}")
+ValueError: Unknown spell: invalid_spell
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\PS\scripts\ps-simc-parser\ps_simc_parser\lua_gen\generator.py", line 119, in _generate_action_lists
+    return {'main': self._generate_action_list(actions)}
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\PS\scripts\ps-simc-parser\ps_simc_parser\lua_gen\generator.py", line 151, in _generate_action_list
+    raise GeneratorError(f"Unknown spell: {spell_name}")
+ps_simc_parser.lua_gen.generator.GeneratorError: Unknown spell: invalid_spell
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\PS\scripts\ps-simc-parser\ps_simc_parser\lua_gen\generator.py", line 61, in generate
+    action_lists = self._generate_action_lists(actions)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\PS\scripts\ps-simc-parser\ps_simc_parser\lua_gen\generator.py", line 132, in _generate_action_lists
+    raise GeneratorError(f"Failed to generate action lists: {e}")
+ps_simc_parser.lua_gen.generator.GeneratorError: Failed to generate action lists: Unknown spell: invalid_spell

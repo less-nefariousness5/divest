@@ -1,7 +1,7 @@
 """
 API mapping definitions for converting SimC concepts to PS API
 """
-from typing import Dict, Optional, Any, List
+from typing import Dict, Any, List, Optional, Union
 from dataclasses import dataclass
 import time
 import logging
@@ -12,24 +12,67 @@ from .resources import RESOURCE_MAPPINGS
 from .spells import SpellMapping, SPELL_MAPPINGS, convert_spell
 
 # Define core mappings
-RESOURCE_MAPPINGS: Dict[str, Dict] = {
-    'fury': {
-        'simc_name': 'fury',
-        'ps_getter': 'Player.Fury'
-    },
-    'energy': {
-        'simc_name': 'energy',
-        'ps_getter': 'Player.Energy'
-    },
-    'mana': {
-        'simc_name': 'mana',
-        'ps_getter': 'Player.Mana'
-    },
-    'soul_fragments': {
-        'simc_name': 'soul_fragments',
-        'ps_getter': 'Player.SoulFragments'
-    },
+@dataclass
+class SpellMapping:
+    """Mapping for a spell from SimC to PS API"""
+    simc_name: str
+    ps_name: str
+    description: str = ""
+
+@dataclass
+class ResourceMapping:
+    """Mapping for a resource from SimC to PS API"""
+    simc_name: str
+    ps_name: str
+    description: str = ""
+
+RESOURCE_MAPPINGS: Dict[str, ResourceMapping] = {
+    'soul_fragments': ResourceMapping(
+        simc_name='soul_fragments',
+        ps_name='SoulFragments',
+        description='Soul Fragments'
+    ),
+    'fury': ResourceMapping(
+        simc_name='fury',
+        ps_name='Fury',
+        description='Fury'
+    ),
+    'pain': ResourceMapping(
+        simc_name='pain',
+        ps_name='Pain',
+        description='Pain'
+    )
 }
+
+# Spell mappings
+SPELL_MAPPINGS: Dict[str, SpellMapping] = {
+    'spirit_bomb': SpellMapping(
+        simc_name='spirit_bomb',
+        ps_name='SpiritBomb',
+        description='Consumes up to 5 Soul Fragments to inflict Fire damage'
+    ),
+    'immolation_aura': SpellMapping(
+        simc_name='immolation_aura',
+        ps_name='ImmolationAura',
+        description='Engulf yourself in flames'
+    ),
+    'sigil_of_flame': SpellMapping(
+        simc_name='sigil_of_flame',
+        ps_name='SigilOfFlame',
+        description='Place a Sigil of Flame at the target location'
+    ),
+    'metamorphosis': SpellMapping(
+        simc_name='metamorphosis',
+        ps_name='Metamorphosis',
+        description='Transform into demon form'
+    ),
+}
+
+def convert_spell(spell_name: str) -> Optional[SpellMapping]:
+    """Convert a SimC spell name to PS API spell name"""
+    if spell_name not in SPELL_MAPPINGS:
+        raise ValueError(f"Unknown spell: {spell_name}")
+    return SPELL_MAPPINGS[spell_name]
 
 # Conversion functions
 def convert_condition(condition: str) -> str:
@@ -79,7 +122,7 @@ def convert_condition(condition: str) -> str:
 def convert_resource(resource: str) -> Optional[str]:
     """Convert SimC resource name to PS resource getter"""
     mapping = RESOURCE_MAPPINGS.get(resource.lower())
-    return mapping['ps_getter'] if mapping else None
+    return mapping.ps_name if mapping else None
 
 def convert_buff(buff: str) -> str:
     """Convert SimC buff name to PS buff check"""
